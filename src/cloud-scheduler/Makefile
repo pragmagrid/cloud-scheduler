@@ -62,9 +62,9 @@ include Rules.mk
 
 CONFIG = config.php
 SCRIPTS = updateConfig
-SQL = install-db.sql
+SQLDB = install-db.sql.tmpl
 
-FILES = $(CONFIG) $(SCRIPTS) $(SQL)
+FILES = $(CONFIG) $(SCRIPTS) $(SQLDB)
 
 SEDSPEC += \
 	-e 's/INSTDIR/$(INSTDIR)/g' \
@@ -85,8 +85,7 @@ install::
 	mkdir -p $(ROOT)/opt/$(NAME)/bin
 	$(INSTALL) -m 750 $(SCRIPTS) $(ROOT)/opt/$(NAME)/bin
 	mkdir -p $(ROOT)/opt/$(NAME)/etc
-	$(INSTALL) -m 750 $(SQL) $(ROOT)/opt/$(NAME)/etc/$(SQL).tmpl
-	$(INSTALL) -m 750 install-admin.sql install-data.sql  $(ROOT)/opt/$(NAME)/etc
+	$(INSTALL) -m 640 install-*.sql.tmpl install-*.sql  $(ROOT)/opt/$(NAME)/etc
 
 clean::
 	rm -rf $(PKGNAME)
