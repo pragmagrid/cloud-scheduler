@@ -1,0 +1,99 @@
+#!/bin/bash
+
+# create a random password
+getPassword () {
+    word=`mkpasswd -l 10 -s 0 2>/dev/nul`
+    echo $word
+}
+
+# default variables
+setDefaults () {
+    BASEDIR=/var/www/html/INSTDIR           # web server deployment directory 
+    DBname=DBNAME                           # db user
+    DBuser=DBUSER                           # db  user passwd
+
+    ETCDIR=/opt/INSTDIR/etc                 # directory with suport scripts and files
+    CONF=$BASEDIR/config/config.php         # config file
+    SCHEMA=$ETCDIR/pragma-cloud-install.sql # db schema 
+    EXT=`date +%Y%m%d-%H%M`                 # extention to append to saved files
+
+    # files with password for DB access
+    pass1=$ETCDIR/$DBuser.pass
+    pass2=$ETCDIR/install.pass
+
+    getVals                  # get host-specific values
+
+    # save files if present 
+    saveFile $CONF 
+    saveFile $SCHEMA 
+
+    # copy templates into files
+    cp -p $CONF.tmpl $CONF
+    cp -p $SCHEMA.tmpl $SCHEMA
+}
+
+# find host-specific values for config file
+getVals () {
+    FQDN=`hostname`
+    ADMIN_EMAIL="root@$FQDN"
+    TIMEZONE=`/opt/rocks/bin/rocks list host attr localhost | grep Timezone  | awk '{print $3}'`
+    DBPASSWD=$(getPassword)
+    INSTALLPASSWD=$(getPassword)
+}
+
+# save file if exist
+saveFile () {
+    if [ -f $1 ]; then
+        cp -p $1 $1.$EXT
+    fi
+}
+
+# save db user passwords
+createPassFile () {
+    # save previous if exist
+    saveFile $pass1
+    saveFile $pass2
+
+    # create files with paswords for DB access 
+    echo $DBPASSWD > $pass1
+    echo $INSTALLPASSWD > $pass2
+    chmod 600 $pass1 $pass2
+}
+
+updateConfigFile () {
+    echo "Updating  file $1"
+    sed -i "s/FQDN/$FQDN/g" $1
+    sed -i "s/ADMIN_EMAIL/$ADMIN_EMAIL/g" $1
+    sed -i "s%TIMEZONE%$TIMEZONE%g" $1
+    sed -i "s/DBPASSWD/$DBPASSWD/g" $1
+    sed -i "s/INSTALLPASSWD/$INSTALLPASSWD/g" $1
+}
+
+updateDirAccess () {
+    if [ -d $BASEDIR ]; then
+        echo "Updating directory permissions in $BASEDIR"
+        chown -R root:apache $BASEDIR/tpl*
+        chown -R root:apache $BASEDIR/Web/uploads
+        chmod g+rwx $BASEDIR/tpl*
+        chmod -R g+rwx $BASEDIR/Web/uploads
+    else
+        echo "ERROR: missing $BASEDIR"
+    fi
+}
+
+# create database and load data
+createDB () {
+    echo "Creating $DBname database..."
+    createPassFile
+    mysql < $ETCDIR/pragma-cloud-install.sql 
+    mysql -D $DBname < $ETCDIR/pragma-sample-data.sql 
+
+}
+
+#### Main ####
+setDefaults
+updateConfigFile $CONF 
+updateConfigFile $SCHEMA 
+updateDirAccess
+createDB
+

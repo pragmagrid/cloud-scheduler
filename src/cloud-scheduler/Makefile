@@ -61,10 +61,13 @@ REDHAT.ROOT = $(CURDIR)/../../
 include Rules.mk
 
 CONFIG = config.php
-FILES = $(CONFIG)
+SCRIPTS = updateConfig
+SQL = install-db.sql
+
+FILES = $(CONFIG) $(SCRIPTS) $(SQL)
 
 SEDSPEC += \
-	-e 's/WWWDIR/$(WWWDIR)/g' \
+	-e 's/INSTDIR/$(INSTDIR)/g' \
 	-e 's/DBUSER/$(DBUSER)/g' \
 	-e 's/DBNAME/$(DBNAME)/g'
 
@@ -74,11 +77,16 @@ SEDSPEC += \
 build: $(FILES)
 	unzip -o $(PKGNAME)-$(VERSION).$(TARBALL_POSTFIX) 
 	(cd patch-files && find . -type f | grep -v CVS | cpio -pduv ../)
-	cp $(CONFIG) $(PKGNAME)/config
+	cp $(CONFIG) $(PKGNAME)/config/$(CONFIG).tmpl
 
 install::
 	mkdir -p $(ROOT)/$(PKGROOT)/$(NAME)
 	cp -R $(PKGNAME)/* $(ROOT)/$(PKGROOT)/$(NAME)
+	mkdir -p $(ROOT)/opt/$(NAME)/bin
+	$(INSTALL) -m 750 $(SCRIPTS) $(ROOT)/opt/$(NAME)/bin
+	mkdir -p $(ROOT)/opt/$(NAME)/etc
+	$(INSTALL) -m 750 $(SQL) $(ROOT)/opt/$(NAME)/etc/$(SQL).tmpl
+	$(INSTALL) -m 750 install-admin.sql install-data.sql  $(ROOT)/opt/$(NAME)/etc
 
 clean::
 	rm -rf $(PKGNAME)
