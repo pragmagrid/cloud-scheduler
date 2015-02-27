@@ -68,6 +68,7 @@ FILES = $(CONFIG) $(SCRIPTS) $(SQLDB)
 
 SEDSPEC += \
 	-e 's/INSTDIR/$(INSTDIR)/g' \
+	-e 's/LOGFILE/$(LOGFILE)/g' \
 	-e 's/DBUSER/$(DBUSER)/g' \
 	-e 's/DBNAME/$(DBNAME)/g'
 

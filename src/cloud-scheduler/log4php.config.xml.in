@@ -1,7 +1,7 @@
 <log4php:configuration xmlns:log4php="http://logging.apache.org/log4php/">
     <appender name="default" class="LoggerAppenderFile">
         <layout class="LoggerLayoutSimple" />
-        <param name="file" value="/tmp/booked.log" />
+        <param name="file" value="/tmp/LOGFILE" />
         <param name="append" value="true" />
     </appender>
     <root>
