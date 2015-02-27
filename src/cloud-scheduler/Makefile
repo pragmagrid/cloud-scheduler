@@ -60,7 +60,7 @@ REDHAT.ROOT = $(CURDIR)/../../
 -include $(ROCKSROOT)/etc/Rules.mk
 include Rules.mk
 
-CONFIG = config.php
+CONFIG = config.php.tmpl log4php.config.xml
 SCRIPTS = updateConfig
 SQLDB = install-db.sql.tmpl
 
@@ -78,7 +78,7 @@ SEDSPEC += \
 build: $(FILES)
 	unzip -o $(PKGNAME)-$(VERSION).$(TARBALL_POSTFIX) 
 	(cd patch-files && find . -type f | grep -v CVS | cpio -pduv ../)
-	cp $(CONFIG) $(PKGNAME)/config/$(CONFIG).tmpl
+	cp $(CONFIG) $(PKGNAME)/config/
 
 install::
 	mkdir -p $(ROOT)/$(PKGROOT)/$(NAME)
