@@ -381,6 +381,7 @@ class en_us extends Language
 		$strings['MultiLineTextbox'] = 'Multiple Line Textbox';
 		$strings['Checkbox'] = 'Checkbox';
 		$strings['SelectList'] = 'Select List';
+		$strings['Count'] = 'Count';
 		$strings['CommaSeparated'] = 'comma separated';
 		$strings['Category'] = 'Category';
 		$strings['CategoryReservation'] = 'Reservation';
