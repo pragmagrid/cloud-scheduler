@@ -331,6 +331,32 @@ class SqlFilterLessThanInt extends BaseSqlFilter
 		return "cast({$this->criteria->Name} as unsigned integer) $sign cast({$this->criteria->Variable} as unsigned integer)";
 	}
 }
+
+class SqlFilterGreaterThanInt extends BaseSqlFilter
+{
+	/**
+	 * @var bool
+	 */
+	private $inclusive = false;
+
+	/**
+	 * @param string|ISqlFilterColumn $columnName
+	 * @param string $columnValue
+	 * @param bool $inclusive false by default
+	 */
+	public function __construct($columnName, $columnValue, $inclusive = false)
+	{
+		$this->inclusive = $inclusive;
+		parent::__construct($columnName, $columnValue);
+	}
+
+	protected function GetSql()
+	{
+		$sign = $this->inclusive ? '>=' : '>';
+		return "cast({$this->criteria->Name} as unsigned integer) $sign cast({$this->criteria->Variable} as unsigned integer)";
+	}
+}
+
 class SqlFilterIn extends BaseSqlFilter
 {
 	/**
