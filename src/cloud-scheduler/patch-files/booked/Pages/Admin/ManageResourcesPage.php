@@ -746,7 +746,7 @@ class ResourceFilterValues
 				}
 				elseif ($attribute->Type() == CustomAttributeTypes::NUMBER )
 				{
-					$attributeFragment->_And($idEquals->_And(new SqlFilterLessThan($attributeValue, $value, true)));
+					$attributeFragment->_And($idEquals->_And(new SqlFilterLessThanInt($attributeValue, $value, true)));
 				}
 				else
 				{

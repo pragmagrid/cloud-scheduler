@@ -175,7 +175,7 @@ class ReservationFilter
 				}
 				elseif ($attribute->Type() == CustomAttributeTypes::NUMBER )
 				{
-					$attributeFragment->_And($idEquals->_And(new SqlFilterLessThan($attributeValue, $attribute->Value(), true)));
+					$attributeFragment->_And($idEquals->_And(new SqlFilterLessThanInt($attributeValue, $attribute->Value(), true)));
 				}
 				else
 				{
