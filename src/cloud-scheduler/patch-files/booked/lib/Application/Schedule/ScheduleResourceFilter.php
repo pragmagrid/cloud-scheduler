@@ -226,6 +226,10 @@ class ScheduleResourceFilter implements IScheduleResourceFilter
 		{
 			return strripos($value->Value(), $attribute->Value) !== false;
 		}
+		elseif ($value->Type() == CustomAttributeTypes::NUMBER )
+		{
+			return intval($value->Value()) >= intval($attribute->Value);
+		}
 		else
 		{
 			return $value->Value() == $attribute->Value;
