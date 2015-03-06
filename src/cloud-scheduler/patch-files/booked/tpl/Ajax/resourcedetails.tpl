@@ -22,7 +22,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	<div style="clear"></div>
 	{if $imageUrl neq ''}
 		<div class="resourceImage">
-			<img style="max-height:200px; max-width:200px;" src="{$imageUrl}" alt="{$resourceName|escape}"/>
+			<img style="max-height:100px; max-width:100px;" src="{$imageUrl}" alt="{$resourceName|escape}"/>
 		</div>
 	{/if}
 	<div class="description">
