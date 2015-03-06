@@ -159,6 +159,7 @@ class en_us extends Language
 		$strings['NoTitleLabel'] = '(no title)';
 		$strings['UsageConfiguration'] = 'Usage Configuration';
 		$strings['ChangeConfiguration'] = 'Change Configuration';
+		$strings['ResourceDetails'] = 'Resource Details';
 		$strings['ResourceMinLength'] = 'Reservations must last at least %s';
 		$strings['ResourceMinLengthNone'] = 'There is no minimum reservation duration';
 		$strings['ResourceMaxLength'] = 'Reservations cannot last more than %s';
