@@ -9,8 +9,8 @@ getPassword () {
 # default variables
 setDefaults () {
     BASEDIR=/var/www/html/INSTDIR           # web server deployment directory 
-    DBname=DBNAME                           # db user
-    DBuser=DBUSER                           # db  user passwd
+    DBname=DBNAME                           # db name
+    DBuser=DBUSER                           # db user 
 
     ETCDIR=/opt/INSTDIR/etc                 # directory with suport scripts and files
     CONF=$BASEDIR/config/config.php         # config file
