@@ -17,7 +17,9 @@
 	</changelog>
 
 	<package>cloud-scheduler</package>
-	<package>roll-cloud-scheduler-usersguide</package>
 
+<post>
+/opt/cloud-scheduler/bin/updateConfig 
+</post>
 
 </kickstart>
