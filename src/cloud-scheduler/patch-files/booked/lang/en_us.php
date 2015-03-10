@@ -355,6 +355,9 @@ class en_us extends Language
 		$strings['Reserved'] = 'Reserved';
 		$strings['MyReservation'] = 'My Reservation';
 		$strings['Pending'] = 'Pending';
+		$strings['Starting'] = 'Starting VMs';
+		$strings['Running'] = 'Running VMs';
+		$strings['Stopping'] = 'Stopping VMs';
 		$strings['Past'] = 'Past';
 		$strings['Restricted'] = 'Restricted';
 		$strings['ViewAll'] = 'View All';
