@@ -150,7 +150,6 @@ td.hilite {
 /* stopping reservation */
 .reserved.stopping {
         background-color: #ff3d17;
-	color: black;
 }
 
 .reserved.stopping.hilite {
@@ -252,7 +251,8 @@ td.resourcename.hilite {
 div.legend {
     line-height: 25px;
     width: 100px;
-    border: solid #555 2px;
+    border: solid #999 1px;
+    border: solid #0772A1 1px;
     text-align: center;
     display: inline-block;
     margin: 0px 2px;
