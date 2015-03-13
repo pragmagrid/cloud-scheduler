@@ -18,5 +18,10 @@
 	</changelog>
 
 	<!-- add edges here -->
+        <edge from="server" to="cloud-scheduler"/>
+        
+        <order head="TAIL">
+            <tail>cloud-scheduler</tail>
+        </order>
 
 </graph>
