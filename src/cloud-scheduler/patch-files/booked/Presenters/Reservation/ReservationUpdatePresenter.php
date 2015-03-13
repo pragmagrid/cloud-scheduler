@@ -94,7 +94,10 @@ class ReservationUpdatePresenter implements IReservationUpdatePresenter
 			$this->page->GetTitle(),
 			$this->page->GetDescription(),
 			$this->userSession);
-                $existingSeries->WithStatus($this->page->GetStatusId());
+		if ( method_exists($this->page, "GetStatusId") ) {
+			// If REST API, will have status field; others do not
+			$existingSeries->WithStatus($this->page->GetStatusId());
+		}
 
 		$existingSeries->UpdateDuration($this->GetReservationDuration());
 		$roFactory = new RepeatOptionsFactory();
