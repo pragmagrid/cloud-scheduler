@@ -84,7 +84,7 @@ install::
 	mkdir -p $(ROOT)/$(PKGROOT)/$(NAME)
 	cp -R $(PKGNAME)/* $(ROOT)/$(PKGROOT)/$(NAME)
 	mkdir -p $(ROOT)/opt/$(NAME)/bin
-	$(INSTALL) -m 750 $(SCRIPTS) $(ROOT)/opt/$(NAME)/bin
+	$(INSTALL) -m 750 $(SCRIPTS) uninstall-cloud-scheduler $(ROOT)/opt/$(NAME)/bin
 	mkdir -p $(ROOT)/opt/$(NAME)/etc
 	$(INSTALL) -m 640 install-*.sql.tmpl install-*.sql  $(ROOT)/opt/$(NAME)/etc
 
