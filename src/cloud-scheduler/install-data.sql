@@ -25,7 +25,7 @@ INSERT INTO `custom_attributes` VALUES
 ( 9, 'Deployment type',        3, 1, '', 1, 'ROCKS KVM, OpenNebula, OpenStack, CloudStack', 3, NULL),
 (10, 'ENT-enabled',            3, 1, '', 1, 'yes, no', 4, NULL),
 (11, 'Site hostname',          1, 4, '', 1, NULL, 5, NULL),
-(12, 'VC Name',                3, 1, '', 1, 'docking, lifemapper,rocks-sge-ipop', 5, NULL);
+(12, 'VC Name',                3, 1, '', 1, 'docking,lmserver,lmcompute,rocks-sge-ipop', 5, NULL);
 
 truncate table custom_attribute_values;
 INSERT INTO `custom_attribute_values` VALUES
