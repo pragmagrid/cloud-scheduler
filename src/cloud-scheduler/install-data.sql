@@ -2,8 +2,8 @@
 delete from resources;
 alter table resources AUTO_INCREMENT = 1;
 INSERT INTO resources VALUES  
-(1,'SDSC cloud','UCSD/SDSC','admin@address','Rocks 6.2 KVM.\nHosting Virtual clusters and virtual machines',NULL,NULL,NULL,NULL,NULL,1,0,1,NULL,NULL,NULL,'resource1.jpg',1,NULL,NULL,'54f4e13a8e3d1',0,0,NULL,1,NULL,NULL),
-(2,'UF cloud','University of Florida','admin@address','Rocks 6.2 KVM. ENT-enabled.\nHosting virtual clusters and virtual machines',NULL,NULL,NULL,NULL,NULL,1,0,1,7,NULL,NULL,'resource2.jpg',1,NULL,NULL,'54f4e142c44b5',0,0,NULL,1,NULL,NULL);
+(1,'SDSC cloud','UCSD/SDSC','admin@address','Rocks 6.2 KVM.\nHosting Virtual clusters and virtual machines',NULL,NULL,NULL,NULL,NULL,1,0,1,NULL,NULL,NULL,'resource-sdsc.png',1,NULL,NULL,'54f4e13a8e3d1',0,0,NULL,1,NULL,NULL),
+(2,'UF cloud','University of Florida','admin@address','Rocks 6.2 KVM. ENT-enabled.\nHosting virtual clusters and virtual machines',NULL,NULL,NULL,NULL,NULL,1,0,1,7,NULL,NULL,'resource-uf.png',1,NULL,NULL,'54f4e142c44b5',0,0,NULL,1,NULL,NULL);
 
 delete from accessories;
 alter table accessories AUTO_INCREMENT = 1;
