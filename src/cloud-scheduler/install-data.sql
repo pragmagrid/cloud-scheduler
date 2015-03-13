@@ -23,8 +23,9 @@ INSERT INTO `custom_attributes` VALUES
 ( 7, 'CPU (per host)',         5, 1, '', 1, NULL, 1, NULL),
 ( 8, 'Memory (Gb/host)',       5, 1, '', 1, NULL,2,NULL),
 ( 9, 'Deployment type',        3, 1, '', 1, 'ROCKS KVM, OpenNebula, OpenStack, CloudStack', 3, NULL),
-(10, 'ENT-enabled',            3, 1, '', 1, 'yes, no', 4, NULL);
-(11, 'Site hostname',          1, 4, '', 1, NULL, 5, NULL);
+(10, 'ENT-enabled',            3, 1, '', 1, 'yes, no', 4, NULL),
+(11, 'Site hostname',          1, 4, '', 1, NULL, 5, NULL),
+(12, 'VC Name',                3, 1, '', 1, 'docking, lifemapper,rocks-sge-ipop', 5, NULL);
 
 truncate table custom_attribute_values;
 INSERT INTO `custom_attribute_values` VALUES
@@ -36,8 +37,8 @@ INSERT INTO `custom_attribute_values` VALUES
 (6, 2, '64',         2, 4 ),
 (7, 3, 'Rocks KVM',  2, 4 ),
 (8, 4, 'yes',        2, 4 ),
-(8, 11, 'pc-163.calit2.optiputer.net', 1, 4 ),
-(9, 11, 'rocks-1.acis.ufl.edu', 2, 4 );
+(9, 11, 'pc-163.calit2.optiputer.net', 1, 4 ),
+(10, 11, 'rocks-1.acis.ufl.edu', 2, 4 );
 
 /* user_id resource_id, permission_id, add tuples if adding more users in install-admin.sql */
 truncate table user_resource_permissions;
