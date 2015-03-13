@@ -30,7 +30,7 @@ updateFiles () {
     # save files if present 
     saveFile $CONF 
     saveFile $DB_SCHEMA
-    saveFIle $DB_ACCESS
+    saveFile $DB_ACCESS
 
     # create files from templates
     cp -p $CONF.tmpl $CONF
