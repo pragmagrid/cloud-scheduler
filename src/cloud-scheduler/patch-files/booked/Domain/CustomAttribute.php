@@ -263,7 +263,7 @@ class CustomAttribute
 		}
 
 		$trimmed = trim($value);
-		return !empty($trimmed);
+		return is_numeric($trimmed) or (is_string($trimmed) and !empty($trimmed));
 	}
 
 	/**
