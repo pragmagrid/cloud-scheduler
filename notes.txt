@@ -1,1 +1,16 @@
 
+Working weeks:
+- July 20 - 24
+- Aug 3 -7
+- Aug 10 - 14
+- Aug 17 - 21
+- Aug 24 - 26
+- Sept 16 - 18
+- Sept 21 - 25
+
+* Ability to reserve more than one virtual cluster per resource
+* Clean up pragma boot
+* Automatic shutdown of reservations
+* ENT integration? Talk to Ichikawa-san
+* Autodoc-vina + opal application demo - Lye Le -- would require opal reconfiguration script to be able to run in different IP space
+
