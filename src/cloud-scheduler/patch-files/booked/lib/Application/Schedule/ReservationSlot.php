@@ -231,7 +231,8 @@ class ReservationSlot implements IReservationSlot
 
 	public function IsPastDate(Date $date)
 	{
-		return $this->_displayDate->SetTime($this->Begin())->LessThan($date);
+                // SSM: Return only if whole reservation in slot is past due
+		return $this->BeginDate()->LessThan($date) && $this->EndDate()->LessThan($date);
 	}
 
 	public function ToTimezone($timezone)
