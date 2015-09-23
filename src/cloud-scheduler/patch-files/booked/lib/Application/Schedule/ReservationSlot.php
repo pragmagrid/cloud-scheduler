@@ -41,7 +41,7 @@ class ReservationSlot implements IReservationSlot
 	/**
 	 * @var ReservationItemView
 	 */
-	private $_reservation;
+	private $_reservations;
 
 	/**
 	 * @var string
@@ -64,16 +64,25 @@ class ReservationSlot implements IReservationSlot
 	protected $_endPeriod;
 
 	/**
+	 * @var array()
+	 */
+	protected $_availResources;
+
+	/**
+	 * @var integer
+	 */
+	protected $_availCapacity;
+
+	/**
 	 * @param SchedulePeriod $begin
 	 * @param SchedulePeriod $end
 	 * @param Date $displayDate
 	 * @param int $periodSpan
 	 * @param ReservationItemView $reservation
 	 */
-	public function __construct(SchedulePeriod $begin, SchedulePeriod $end, Date $displayDate, $periodSpan,
-								ReservationItemView $reservation)
+	public function __construct(SchedulePeriod $begin, SchedulePeriod $end, Date $displayDate, $periodSpan, $reservations)
 	{
-		$this->_reservation = $reservation;
+		$this->_reservations = $reservations;
 		$this->_begin = $begin->BeginDate();
 		$this->_displayDate = $displayDate;
 		$this->_end = $end->EndDate();
@@ -127,6 +136,26 @@ class ReservationSlot implements IReservationSlot
 	}
 
 	/**
+	 * SSM: Get all reservations 
+	 *
+	 * @return array|ReservationItemView[]
+	 */
+	public function GetReservations()
+	{
+		return $this->_reservations;
+	}
+
+        /**
+	 * SSM: Get reservation count
+	 *
+         * @return integer
+         */
+        public function NumberOfReservations()
+        {
+                return count( $this->_reservations );
+        }
+
+	/**
 	 * @return int
 	 */
 	public function PeriodSpan()
@@ -142,9 +171,9 @@ class ReservationSlot implements IReservationSlot
 	{
 		if (empty($factory))
 		{
-			return SlotLabelFactory::Create($this->_reservation);
+			return SlotLabelFactory::Create($this->_reservations);
 		}
-		return $factory->Format($this->_reservation);
+		return $factory->Format($this->_reservations);
 	}
 
 	public function IsReservable()
@@ -159,24 +188,45 @@ class ReservationSlot implements IReservationSlot
 
 	public function IsPending()
 	{
-		return $this->_reservation->RequiresApproval;
+		foreach( $this->_reservations as $reservation ) {
+			if ( $reservation->RequiresApproval ) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/* true if reservation resource is starting */
 	public function IsStarting()
 	{
-		return $this->_reservation->ReservationStarting;
+		foreach( $this->_reservations as $reservation ) {
+			if ( $reservation->ReservationStarting ) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/* true if reservation resource is running */
 	public function IsRunning()
 	{
-		return $this->_reservation->ReservationRunning;
+		foreach( $this->_reservations as $reservation ) {
+			if ( $reservation->ReservationRunning ) {
+				return true;
+			}
+		}
+		return false;
 	}
+
 	/* true if reservation resource is stopping */
 	public function IsStopping()
 	{
-		return $this->_reservation->ReservationStopping;
+		foreach( $this->_reservations as $reservation ) {
+			if ( $reservation->ReservationStopping ) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public function IsPastDate(Date $date)
@@ -186,22 +236,32 @@ class ReservationSlot implements IReservationSlot
 
 	public function ToTimezone($timezone)
 	{
-		return new ReservationSlot($this->_beginPeriod->ToTimezone($timezone), $this->_endPeriod->ToTimezone($timezone), $this->Date(), $this->PeriodSpan(), $this->_reservation);
+		return new ReservationSlot($this->_beginPeriod->ToTimezone($timezone), $this->_endPeriod->ToTimezone($timezone), $this->Date(), $this->PeriodSpan(), $this->_reservations[0]);
 	}
 
 	public function Id()
 	{
-		return $this->_reservation->ReferenceNumber;
+		return $this->_reservations[0]->ReferenceNumber;
 	}
 
 	public function IsOwnedBy(UserSession $user)
 	{
-		return $this->_reservation->UserId == $user->UserId;
+		foreach( $this->_reservations as $reservation ) {
+			if ( $reservation->UserId == $user->UserId ) {
+				return true;
+			}
+		}
+		return $false;
 	}
 
 	public function IsParticipating(UserSession $session)
 	{
-		return $this->_reservation->IsUserParticipating($session->UserId) || $this->_reservation->IsUserInvited($session->UserId);
+		foreach( $this->_reservations as $reservation ) {
+			if ( $reservation->IsUserParticipating($session->UserId) || $reservation->IsUserInvited($session->UserId) ) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public function __toString()
@@ -228,7 +288,7 @@ class ReservationSlot implements IReservationSlot
 
 	public function Color()
 	{
-		$color = $this->_reservation->UserPreferences->Get(UserPreferences::RESERVATION_COLOR);
+		$color = $this->_reservations[0]->UserPreferences->Get(UserPreferences::RESERVATION_COLOR);
 		if (!empty($color))
 		{
 			return "#$color";
@@ -247,4 +307,37 @@ class ReservationSlot implements IReservationSlot
 
 		return null;
 	}
+
+	/**
+	 * SSM: Get the readable description of capacity left of provided slot
+	 *
+         * @return string
+         */
+        public function GetCapacity() {
+		$capacityLabel = round($this->_availCapacity*100) . '% available';
+		if ( $this->_availCapacity > 0 ) {
+			$capacityLabel .= " [ ";
+			foreach( $this->_availResources as $key => $attribute ) {
+				if ( $key > 0 ) {
+					$capacityLabel .= ", ";
+				}
+				$capacityLabel .= $attribute->Label() . ' = ' . $attribute->Value(); 
+			}
+			$capacityLabel .= " ]";
+		}
+                return $capacityLabel;
+        }
+
+        /**
+	 * SSM: Set capacity of the slot
+	 * @param int
+	 * @param array|CustomAttribute[]
+	 *
+         * @return string
+         */
+        public function SetCapacity( $availCapacity, $availResource ) {
+        	$this->_availResources = $availResource;
+        	$this->_availCapacity = $availCapacity;
+        }
+
 }

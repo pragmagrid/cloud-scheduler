@@ -20,6 +20,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 require_once(ROOT_DIR . 'Pages/SecurePage.php');
 require_once(ROOT_DIR . 'Presenters/SchedulePresenter.php');
+require_once(ROOT_DIR . 'Domain/Values/CustomAttributes.php');
 
 interface ISchedulePage extends IActionPage
 {
@@ -469,11 +470,33 @@ class SchedulePage extends ActionPage implements ISchedulePage
 
 class DisplaySlotFactory
 {
-	public function GetFunction(IReservationSlot $slot, $accessAllowed = false)
+	public function GetFunction(IReservationSlot $slot, $accessAllowed = false, $resourceId, $resourceAttributes )
 	{
+		// SSM: Calculate capacity
+		if ( $resourceAttributes ) {
+			$availResources = array();
+			$resourceByIdAttributes = array();
+			foreach( $resourceAttributes as $resourceAttribute ) {
+				$resourceByIdAttributes[$resourceAttribute->Id()] = $resourceAttribute;
+			}
+			list( $cpuAttribute, $memoryAttribute) = CustomAttributes::GetCapacityAttributes($resourceByIdAttributes);
+			if ( $slot->GetReservations() ) {
+				list ($capacity, $availCpus, $availMemory) = CustomAttributes::GetCapacityLeft($slot->GetReservations(), $resourceByIdAttributes );
+				array_push( $availResources, new Attribute($cpuAttribute, $availCpus) );
+				array_push( $availResources, new Attribute($memoryAttribute, $availMemory) );
+				$slot->setCapacity( $capacity, $availResources );
+			}
+		}
 		if ($slot->IsReserved())
 		{
-			if ($this->IsMyReservation($slot))
+			if ($capacity> 0) {
+				if ( $slot->IsPastDate(Date::Now()) ) {
+					return 'displayPastTime';
+				} else {
+					return 'displayPartiallyReserved';
+				}
+			}
+			elseif ($this->IsMyReservation($slot))
 			{
 				return 'displayMyReserved';
 			}
@@ -494,7 +517,7 @@ class DisplaySlotFactory
 			}
 			elseif  ($slot->IsPastDate(Date::Now()))
 			{
-				return 'displayPastTime';
+				return 'displayPastTimeEmpty';
 			}
 			else
 			{
