@@ -256,7 +256,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					<tr class="slots">
 						<td class="resourcename">
 							{if $resource->CanAccess && $DailyLayout->IsDateReservable($date)}
-								<a href="{$href}" resourceId="{$resource->Id}"
+								<a href="{$href}" resourceId="{$resource->Id}" 
+									startdate={$date->ToUtc()} enddate={$date->AddDays(1)->ToUtc()}
 								   class="resourceNameSelector">{$resource->Name}</a>
 							{else}
 								{$resource->Name}  

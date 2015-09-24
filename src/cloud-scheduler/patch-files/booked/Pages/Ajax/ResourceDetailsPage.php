@@ -91,6 +91,25 @@ class ResourceDetailsPage extends Page implements IResourceDetailsPage
         return ServiceLocator::GetServer()->GetQuerystring(QueryStringKeys::RESOURCE_ID);
     }
 
+	/* SSM: Get begin date field from page
+	 * 
+	 * @return Date
+	*/
+	public function GetStartDate()
+	{
+		return ServiceLocator::GetServer()->GetQuerystring('startdate');
+	}
+
+	/* SSM: Get end date field from page
+	 * 
+	 * @return Date
+	*/
+	public function GetEndDate()
+	{
+		return ServiceLocator::GetServer()->GetQuerystring('enddate');
+	}
+
+
 	/**
 	 * @@param ResourceType $resourceType
 	 * @@param Attribute[] $attributes
@@ -180,15 +199,16 @@ class ResourceDetailsPresenter
 		}
 
 	// SSM: Get active reservations to display
-	$beginDate = new Date( '2015-09-23 00:00:00' );
-	$endDate = new Date( '2015-09-24 00:00:00' );
+	$beginDate = new Date( $this->page->GetStartDate() );
+	$endDate = new Date( $this->page->GetEndDate() );
 	$scheduleDates = new DateRange( $beginDate, $endDate );
         $user = ServiceLocator::GetServer()->GetUserSession();
 
 	$reservationListing = $this->reservationService->GetReservations($scheduleDates, 0, $user->Timezone);
 	$resourceReservations = array();
 	foreach( $reservationListing->Reservations() as $reservation ) {
-		if ( $reservation->ResourceId() == $resourceId ) {
+		if ( $reservation->ResourceId() == $resourceId && 
+			$reservation->EndDate()->GreaterThan($beginDate) && $reservation->StartDate()->LessThan($endDate) ) {
 			$resourceReservations[] = $reservation;
 		}
 	}

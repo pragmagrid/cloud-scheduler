@@ -135,7 +135,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	<!-- SSM: Display reservation details in pop-up -->
 	<div style="reservations">
 		&nbsp;<br>
-		<span class="bold"><u>{count($reservations)} {translate key=Reservations}</u></span>
+		{if $reservations|count > 0}
+			<span class="bold"><u>{count($reservations)} {translate key=Reservations}</u></span>
+		{/if}
 		<br>
 		{foreach from=$reservations item=reservation}
 			<br>
