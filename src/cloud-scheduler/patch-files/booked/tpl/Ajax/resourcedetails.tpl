@@ -131,5 +131,22 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 		</ul>
 	</div>
+
+	<!-- SSM: Display reservation details in pop-up -->
+	<div style="reservations">
+		&nbsp;<br>
+		<span class="bold"><u>{count($reservations)} {translate key=Reservations}</u></span>
+		<br>
+		{foreach from=$reservations item=reservation}
+			<br>
+			<div class="user"><span class="bold">{$reservation->GetItem()->Title}</span> ({$reservation->GetItem()->FirstName} {$reservation->GetItem()->LastName})</div>
+			<div class="dates">{$reservation->StartDate()->ToTimezone($userTimezone)->Format(Date::SHORT_FORMAT)} - {$reservation->EndDate()->ToTimezone($userTimezone)->Format(Date::SHORT_FORMAT)}</div>
+			{foreach from=$reservation->GetItem()->Attributes->All()  key=attributeId item=attributeValue}
+				{assign var=attribute value=$ReservationAttributes[$attributeId]}
+				<div class="attribute"><label class="customAttribute">{$attribute->Label()}:</label><span class="attributeValue ">{$attributeValue}</span></div>
+			{/foreach}
+			<div class="title"><a href="reservation.php?rn={$reservation->ReferenceNumber}">Edit</a></div>
+		{/foreach}
+	</div>
 	<div style="clear"></div>
 </div>

@@ -73,6 +73,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		{foreach from=$Resources item=resource name=resource_loop}
 			{foreach from=$BoundDates item=date}
 				{assign var=resourceId value=$resource->Id}
+				{assign var=resourceAttributes value=$ResourceAttributeValueList->GetAttributes($resource->Id)}
 				{assign var=slots value=$DailyLayout->GetLayout($date, $resourceId)}
 				{assign var=href value="{Pages::RESERVATION}?rid={$resource->Id}&sid={$ScheduleId}&rd={formatdate date=$date key=url}"}
 

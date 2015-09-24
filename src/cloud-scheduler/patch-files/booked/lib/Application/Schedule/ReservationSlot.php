@@ -314,17 +314,24 @@ class ReservationSlot implements IReservationSlot
 	 *
          * @return string
          */
-        public function GetCapacity() {
-		$capacityLabel = round($this->_availCapacity*100) . '% available';
+        public function GetCapacityPercentage() {
+		return round($this->_availCapacity*100) . '% available';
+        }
+
+	/**
+	 * SSM: Get the readable description of capacity left of provided slot
+	 *
+         * @return string
+         */
+        public function GetCapacitySummary() {
+		$capacityLabel = ""; 
 		if ( $this->_availCapacity > 0 ) {
-			$capacityLabel .= " [ ";
 			foreach( $this->_availResources as $key => $attribute ) {
 				if ( $key > 0 ) {
 					$capacityLabel .= ", ";
 				}
-				$capacityLabel .= $attribute->Label() . ' = ' . $attribute->Value(); 
+				$capacityLabel .= $attribute->Value() . ' ' . $attribute->Label(); 
 			}
-			$capacityLabel .= " ]";
 		}
                 return $capacityLabel;
         }
