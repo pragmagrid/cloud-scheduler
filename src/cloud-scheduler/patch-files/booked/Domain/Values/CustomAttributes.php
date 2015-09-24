@@ -22,7 +22,7 @@ class CustomAttributes
 {
 	private $attributes = array();
 
-	// SSM: ReservationAttrs = "CPUs" = 7, "Memory (Gb/host)" = 8
+	// SSM: ReservationAttrs = "CPUs" = 7, "Memory (Gb)" = 8
 	public static $reservationAttrs = array( 'cpus' => 7, 'memory' => 8 );
 	// SSM: ResourceAttrs = "Available CPUs (total)" = 1, "Available Memory (Gb)" = 2
 	public static $resourceAttrs = array( 'cpus' => 1, 'memory' => 2 );
@@ -119,8 +119,8 @@ class CustomAttributes
 			if ( $reservation->Attributes ) {
 				$reservedCpus = $reservation->Attributes->Get(CustomAttributes::$reservationAttrs['cpus']);
 				$usedCpus += $reservedCpus;
-				$reservedMemoryPerVM = $reservation->Attributes->Get(CustomAttributes::$reservationAttrs['memory']);
-				$reservedTotalMemory = $reservedCpus * $reservedMemoryPerVM;
+				$reservedMemory = $reservation->Attributes->Get(CustomAttributes::$reservationAttrs['memory']);
+				$reservedTotalMemory = $reservedMemory;
 				$usedMemory += $reservedTotalMemory;
 			}
 		}
