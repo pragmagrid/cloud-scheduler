@@ -147,7 +147,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				{assign var=attribute value=$ReservationAttributes[$attributeId]}
 				<div class="attribute"><label class="customAttribute">{$attribute->Label()}:</label><span class="attributeValue ">{$attributeValue}</span></div>
 			{/foreach}
-			<div class="title"><a href="reservation.php?rn={$reservation->ReferenceNumber}">Edit</a></div>
+			<div class="title"><a href="reservation.php?rn={$reservation->ReferenceNumber()}">Edit</a></div>
 		{/foreach}
 	</div>
 	<div style="clear"></div>
