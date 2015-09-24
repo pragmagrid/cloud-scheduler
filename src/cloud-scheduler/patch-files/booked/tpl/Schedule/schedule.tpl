@@ -37,7 +37,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	{/if}
 	<td {$spantype|default:'col'}span="{$Slot->PeriodSpan()}" class="reserved {$class} {$OwnershipClass} clickres slot"
 		resid="{$Slot->Id()}" {$color}
-		id="{$Slot->Id()}|{$Slot->Date()->Format('Ymd')}">{$Slot->GetCapacity()} {$Slot->Label($SlotLabelFactory)|escapequotes}</td>
+		id="{$Slot->Id()}|{$Slot->Date()->Format('Ymd')}">{$Slot->GetCapacityPercentage()} {$Slot->Label($SlotLabelFactory)|escapequotes}</td>
 {/function}
 
 {function name=displayMyReserved}
@@ -66,7 +66,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	{if $Slot->HasCustomColor()}
 		{assign var=color value='style="background-color:'|cat:$Slot->Color()|cat:';color:'|cat:$Slot->TextColor()|cat:';"'}
 	{/if}
-	<td {$spantype|default:'col'}span="{$Slot->PeriodSpan()}" ref="{$SlotRef}" class="reservable clickres slot" data-href="{$Href}" data-start="{$Slot->BeginDate()->Format('Y-m-d H:i:s')|escape:url}" data-end="{$Slot->EndDate()->Format('Y-m-d H:i:s')|escape:url}" {$color}> {$Slot->GetCapacity()} {$Slot->Label($SlotLabelFactory)|escapequotes}</td>
+	<td {$spantype|default:'col'}span="{$Slot->PeriodSpan()}" ref="{$SlotRef}" class="reservable clickres slot" data-href="{$Href}" data-start="{$Slot->BeginDate()->Format('Y-m-d H:i:s')|escape:url}" data-end="{$Slot->EndDate()->Format('Y-m-d H:i:s')|escape:url}" {$color}> {$Slot->GetCapacitySummary()} {$Slot->Label($SlotLabelFactory)|escapequotes}</td>
 {/function}
 
 {function name=displayReservable}
@@ -259,7 +259,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 								<a href="{$href}" resourceId="{$resource->Id}"
 								   class="resourceNameSelector">{$resource->Name}</a>
 							{else}
-								{$resource->Name}  {$resource->Id} 
+								{$resource->Name}  
 							{/if}
 						</td>
 						{foreach from=$slots item=slot}
