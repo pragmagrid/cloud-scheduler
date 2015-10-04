@@ -78,6 +78,9 @@ class CustomAttributeValidationRule implements IReservationValidationRule
 					if ( ! $keyedResources[$existingItem->GetResourceId()] ) {
 						continue; // ignore if not our resource
 					}
+					if ( $existingItem->ReferenceNumber == $reservation->ReferenceNumber() ) {
+						continue; // ignore; we must be changing reservation
+					}
                                 	if ( ($existingItem->GetStartDate()->Equals($reservation->EndDate()) ||
                                         	$existingItem->GetEndDate()->Equals($reservation->StartDate()))
                                 	) {
