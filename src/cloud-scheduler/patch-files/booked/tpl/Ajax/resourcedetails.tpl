@@ -143,6 +143,17 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			<br>
 			<div class="user"><span class="bold">{$reservation->GetItem()->Title}</span> ({$reservation->GetItem()->FirstName} {$reservation->GetItem()->LastName})</div>
 			<div class="dates">{$reservation->StartDate()->ToTimezone($userTimezone)->Format(Date::SHORT_FORMAT)} - {$reservation->EndDate()->ToTimezone($userTimezone)->Format(Date::SHORT_FORMAT)}</div>
+			<div class="dates">Status: 
+				{if $reservation->GetItem()->ReservationRunning == true}
+					<span style="background-color: #1c982a; color: #ffffff">&nbsp; <b>Running</b> &nbsp;</span>
+				{else if $reservation->GetItem()->ReservationStarting == true}
+					<span style="background-color: #2eb3a1; color: #ffffff">&nbsp; <b>Starting</b> &nbsp;</span>
+				{else if $reservation->GetItem()->ReservationStopping == true}
+					<span style="background-color: #ff3d17; color: #ffffff">&nbsp; <b>Stopping</b> &nbsp;</span>
+				{else}
+					<span style="background-color: ##408AD2; color: #ffffff">&nbsp; <b>Reserved</b> &nbsp;</span>
+				{/if}
+			</div>
 			{foreach from=$reservation->GetItem()->Attributes->All()  key=attributeId item=attributeValue}
 				{assign var=attribute value=$ReservationAttributes[$attributeId]}
 				<div class="attribute"><label class="customAttribute">{$attribute->Label()}:</label><span class="attributeValue ">{$attributeValue}</span></div>

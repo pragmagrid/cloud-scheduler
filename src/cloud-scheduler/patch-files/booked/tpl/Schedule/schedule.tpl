@@ -37,7 +37,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	{/if}
 	<td {$spantype|default:'col'}span="{$Slot->PeriodSpan()}" class="reserved {$class} {$OwnershipClass} clickres slot"
 		resid="{$Slot->Id()}" {$color}
-		id="{$Slot->Id()}|{$Slot->Date()->Format('Ymd')}">{$Slot->GetCapacityPercentage()} {$Slot->Label($SlotLabelFactory)|escapequotes}</td>
+		id="{$Slot->Id()}|{$Slot->Date()->Format('Ymd')}">Unavailable{$Slot->Label($SlotLabelFactory)|escapequotes}</td>
 {/function}
 
 {function name=displayMyReserved}
