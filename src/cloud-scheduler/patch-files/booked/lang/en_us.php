@@ -654,10 +654,10 @@ class en_us extends Language
 		// End Day representations
 
 		// Email Subjects
-		$strings['ReservationApprovedSubject'] = 'Your Reservation Has Been Approved';
-		$strings['ReservationCreatedSubject'] = 'Your Reservation Was Created';
-		$strings['ReservationUpdatedSubject'] = 'Your Reservation Was Updated';
-		$strings['ReservationDeletedSubject'] = 'Your Reservation Was Removed';
+		$strings['ReservationApprovedSubject'] = 'Your PRAGMA Cloud Reservation Has Been Approved';
+		$strings['ReservationCreatedSubject'] = 'Your PRAGMA Cloud Reservation Was Created';
+		$strings['ReservationUpdatedSubject'] = 'Your PRAGMA Cloud Reservation Was Updated';
+		$strings['ReservationDeletedSubject'] = 'Your PRAGMA Cloud Reservation Was Removed';
 		$strings['ReservationCreatedAdminSubject'] = 'Notification: A Reservation Was Created';
 		$strings['ReservationUpdatedAdminSubject'] = 'Notification: A Reservation Was Updated';
 		$strings['ReservationDeleteAdminSubject'] = 'Notification: A Reservation Was Removed';
