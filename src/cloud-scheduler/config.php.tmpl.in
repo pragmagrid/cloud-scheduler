@@ -41,7 +41,7 @@ $conf['settings']['cache.templates'] = 'false';                  // true recomme
 $conf['settings']['use.local.jquery'] = 'false';                // false recommended, delivers jQuery from Google CDN, uses less bandwidth
 $conf['settings']['registration.captcha.enabled'] = 'true';     // recommended. unless using recaptcha this requires php_gd2 enabled in php.ini
 $conf['settings']['registration.require.email.activation'] = 'false';	// requires enable.email = true
-$conf['settings']['registration.auto.subscribe.email'] = 'false';	// requires enable.email = true
+$conf['settings']['registration.auto.subscribe.email'] = 'true';	// requires enable.email = true
 $conf['settings']['registration.notify.admin'] = 'false';		// whether the registration of a new user sends an email to the admin 
 $conf['settings']['inactivity.timeout'] = '30';     			// minutes before the user is automatically logged out
 $conf['settings']['name.format'] = '{first} {last}';     		// display format when showing user names
@@ -72,7 +72,7 @@ $conf['settings']['privacy']['hide.user.details'] = 'false';    	// if personal 
 $conf['settings']['privacy']['hide.reservation.details'] = 'false';	// if reservation details should be displayed to non-administrators
 
 /* Reservation specific configuration */
-$conf['settings']['reservation']['start.time.constraint'] = 'future';	// when reservations can be created or edited. options are future, current, none
+$conf['settings']['reservation']['start.time.constraint'] = 'current';	// when reservations can be created or edited. options are future, current, none
 $conf['settings']['reservation']['updates.require.approval'] = 'false';	// if updates to previously approved reservations require approval again
 $conf['settings']['reservation']['prevent.participation'] = 'false';	// if participation and invitation options should be removed
 $conf['settings']['reservation']['prevent.recurrence'] = 'false';	// if recurring reservations are disabled for non-administrators
