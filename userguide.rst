@@ -2,6 +2,7 @@
 
 PRAGMA Cloud Scheduler User Guide
 ============================================================
+The cloud scheduler enable users to start and manage virtual cluster at PRAGMA sites.
 
 .. contents::
 
