@@ -4,7 +4,7 @@
 
 	<description>
 
-	The cloud-scheduler Roll
+	The cloud-scheduler roll
 
 	</description>
 
@@ -17,11 +17,10 @@
 	<changelog>
 	</changelog>
 
-	<!-- add edges here -->
-        <edge from="server" to="cloud-scheduler"/>
+    <edge from="server" to="cloud-scheduler"/>
         
-        <order head="TAIL">
-            <tail>cloud-scheduler</tail>
-        </order>
+    <order head="TAIL">
+        <tail>cloud-scheduler</tail>
+    </order>
 
 </graph>

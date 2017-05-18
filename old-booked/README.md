@@ -1,6 +1,9 @@
 # cloud-scheduler
 PRAGMA Cloud Scheduler
 
+The cloud scheduler based on booked API is tagged as booked-2.5.3,
+last commit 3dc006a  
+
 contrib/ - OmniGraffle images for scheduler
 
 ## Add resource attributes Latitude and Longitude (required)

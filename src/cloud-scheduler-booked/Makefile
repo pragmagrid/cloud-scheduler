@@ -1,3 +1,4 @@
+# $Id$
 #
 # @Copyright@
 # 
@@ -52,6 +53,7 @@
 # 
 # @Copyright@
 #
+# $Log$
 
 REDHAT.ROOT = $(CURDIR)/../../
 
@@ -62,6 +64,7 @@ CONFIG = config.php.tmpl log4php.config.xml
 SCRIPTS = updateConfig
 SQLDB = install-db.sql.tmpl
 
+FILES = $(CONFIG) $(SCRIPTS) $(SQLDB)
 
 SEDSPEC += \
 	-e 's/INSTDIR/$(INSTDIR)/g' \
@@ -72,7 +75,7 @@ SEDSPEC += \
 %: %.in
 	$(SED) $(SEDSPEC) $^ > $@
 
-build: 
+build: $(FILES)
 	unzip -o $(PKGNAME)-$(VERSION).$(TARBALL_POSTFIX) 
 	(cd patch-files && find . -type f | grep -v CVS | cpio -pduv ../)
 	cp $(CONFIG) $(PKGNAME)/config/
@@ -81,9 +84,10 @@ install::
 	mkdir -p $(ROOT)/$(PKGROOT)/$(NAME)
 	cp -R $(PKGNAME)/* $(ROOT)/$(PKGROOT)/$(NAME)
 	mkdir -p $(ROOT)/opt/$(NAME)/bin
+	$(INSTALL) -m 750 $(SCRIPTS) uninstall-cloud-scheduler $(ROOT)/opt/$(NAME)/bin
 	mkdir -p $(ROOT)/opt/$(NAME)/etc
 	$(INSTALL) -m 640 install-*.sql.tmpl install-*.sql  $(ROOT)/opt/$(NAME)/etc
 
 clean::
 	rm -rf $(PKGNAME)
-	rm -rf $(F:w
+	rm -rf $(FILES)
