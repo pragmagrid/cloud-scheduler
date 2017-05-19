@@ -10,6 +10,7 @@ _os
 _arch
 _distribution
 .rpmmacros
+bootstrap.py
 
 # ignore version* files
 rocks-version.mk
@@ -27,3 +28,8 @@ roll*.mk
 # ignore roll files 
 roll-*.*
 roll-profile.mk
+
+
+# ignore source files
+src/gui/*.tar.gz
+
