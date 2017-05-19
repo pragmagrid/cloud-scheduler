@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# Remove previously installed rpm and db
+
+rpm -el NAME
+rm -rf /opt/NAME
+rm -rf /var/www/html/NAME
+mysql -e "drop database DBNAME;"
+

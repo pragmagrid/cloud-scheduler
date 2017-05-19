@@ -1,5 +1,4 @@
 #
-#
 # @Copyright@
 # 
 # 				Rocks(r)
@@ -54,7 +53,50 @@
 # @Copyright@
 #
 
--include $(ROLLSROOT)/etc/Rolls.mk
-include Rolls.mk
+REDHAT.ROOT = $(CURDIR)/../../
 
-default: roll
+-include $(ROCKSROOT)/etc/Rules.mk
+include Rules.mk
+
+SCRIPTS = cs-config cs-uninstall
+SQLFILES = cs-initdb.sql.tmpl
+FILES = $(SCRIPTS) $(SQLFILES)
+
+SEDSPEC += \
+	-e 's/DBUSER/$(DBUSER)/g' \
+	-e 's/DBNAME/$(DBNAME)/g' \
+	-e 's/DBSCHEMA/$(DBSCHEMA)/g' \
+	-e 's/DBDATA/$(DBDATA)/g' \
+	-e 's/NAME/$(NAME)/g' 
+
+%: %.in
+	$(SED) $(SEDSPEC) $^ > $@
+
+prep: 
+	git clone https://github.com/pragmagrid/cloud-scheduler-gui
+	(cd patch-files && find . -type f | grep -v CVS | cpio -pduv ../)
+	( \
+		cd cloud-scheduler-gui/UI;  \
+		npm install;                \
+		npm run build-unix;         \
+	)
+	tar czf $(PKGNAME)-$(VERSION).$(TARBALL_POSTFIX) $(PKGNAME)
+
+build: $(FILES)
+	tar xzvf $(PKGNAME)-$(VERSION).$(TARBALL_POSTFIX)
+
+install::
+	mkdir -p $(ROOT)/$(PKGROOT)/bin
+	mkdir -p $(ROOT)/$(PKGROOT)/etc
+	cp -R $(PKGNAME)/UI $(ROOT)/$(PKGROOT)
+	$(INSTALL) -m 755 $(SCRIPTS) $(ROOT)/$(PKGROOT)/bin
+	$(INSTALL) -m 640 $(PKGNAME)/db/*.sql* $(ROOT)/$(PKGROOT)/etc
+	$(INSTALL) -m 640 $(SQLFILES) $(ROOT)/$(PKGROOT)/etc
+	mkdir -p $(ROOT)/$(WWWROOT)
+	cp -R $(PKGNAME)/UI/dist/* $(ROOT)/$(WWWROOT)
+	mkdir -p $(ROOT)/$(WWWROOT)/scripts
+	$(INSTALL) -m 755 $(PKGNAME)/scripts/*.py  $(ROOT)/$(WWWROOT)/scripts
+
+clean::
+	rm -rf $(FILES)
+	#rm -rf $(PKGNAME)

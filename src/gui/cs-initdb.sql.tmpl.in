@@ -1,0 +1,12 @@
+--
+-- Create cloud scheduler database
+--
+
+DROP DATABASE IF EXISTS DBNAME;
+
+CREATE DATABASE DBNAME;
+
+USE DBNAME;
+GRANT ALL on DBNAME.* to 'DBUSER'@'127.0.0.1' identified by 'DBPASSWD';SET foreign_key_checks = 0;
+GRANT ALL on DBNAME.* to 'DBUSER'@'localhost' identified by 'DBPASSWD';SET foreign_key_checks = 0;
+

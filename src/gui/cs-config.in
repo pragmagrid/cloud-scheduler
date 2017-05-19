@@ -1,0 +1,78 @@
+#!/bin/bash
+
+# create a random password, length is passed as an argument
+getPassword () {
+    word=`mkpasswd -l $1 -s 0 2>/dev/nul`
+    echo $word
+}
+
+# default variables
+setDefaults () {
+    DBname=DBNAME                           # db name
+    DBuser=DBUSER                           # db user 
+
+    ETCDIR=/opt/NAME/etc                    # directory with suport scripts and files
+    DB_SCHEMA=$ETCDIR/DBSCHEMA.sql     # db schema pragma-initdb.sql.tmpl
+    DB_DATA=$ETCDIR/DBDATA.sql              # db data
+
+    # files with password for DB access
+    pass1=$ETCDIR/$DBuser.pass
+    pass2=$ETCDIR/install.pass
+
+    # get host-specific values
+    LOCALHOST=`hostname`
+    DBPASSWD=$(getPassword 10)
+    DBPASSWD='pragma28'                    # FIXME, temp for debugging
+    EXT=`date +%Y%m%d-%H%M`                # extention to append to saved files
+}
+
+updateFiles () {
+    # save files if present 
+    saveFile $DB_SCHEMA
+
+    # create files from templates
+    cp -p $DB_SCHEMA.tmpl $DB_SCHEMA
+
+    # update values
+    updateConfigFile $DB_SCHEMA
+}
+
+# save file if exist
+saveFile () {
+    if [ -f $1 ]; then
+        cp -p $1 $1.$EXT
+    fi
+}
+
+# save db user passwords
+createPassFile () {
+    # save previous if exist
+    saveFile $pass1
+    saveFile $pass2
+
+    # create files with paswords for DB access 
+    echo $DBPASSWD > $pass1
+    chmod 600 $pass1 $pass2
+}
+
+updateConfigFile () {
+    echo "Updating  file $1"
+    sed -i "s/LOCALHOST/$LOCALHOST/g" $1
+    sed -i "s/DBPASSWD/$DBPASSWD/g" $1
+}
+
+# create database and load data
+createDB () {
+    createPassFile
+    echo "Creating $DBname database..."
+    mysql < $DB_SCHEMA
+
+    echo "Inserting data into database  $DBname ..."
+    mysql -D $DBname < $DB_DATA
+}
+
+#### Main ####
+setDefaults
+updateFiles
+createDB
+
