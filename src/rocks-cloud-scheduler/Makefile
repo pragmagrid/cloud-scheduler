@@ -3,9 +3,10 @@
 # 
 # 				Rocks(r)
 # 		         www.rocksclusters.org
-# 		         version 6.2 (SideWinder)
+# 		         version 5.6 (Emerald Boa)
+# 		         version 6.1 (Emerald Boa)
 # 
-# Copyright (c) 2000 - 2014 The Regents of the University of California.
+# Copyright (c) 2000 - 2013 The Regents of the University of California.
 # All rights reserved.	
 # 
 # Redistribution and use in source and binary forms, with or without
@@ -58,30 +59,42 @@ REDHAT.ROOT = $(CURDIR)/../../
 -include $(ROCKSROOT)/etc/Rules.mk
 include Rules.mk
 
-prep: 
-	git clone https://github.com/pragmagrid/cloud-scheduler-gui
-	(cd patch-files && find . -type f | grep -v CVS | cpio -pduv ../)
-	( \
-		cd cloud-scheduler-gui/UI;  \
-		npm install;                \
-		npm run build-unix;         \
-	)
-	tar czf $(PKGNAME)-$(VERSION).$(TARBALL_POSTFIX) $(PKGNAME)
+PY.PATH = /opt/python/bin/$(PYTHONVER)
 
-build: 
-	tar xzvf $(PKGNAME)-$(VERSION).$(TARBALL_POSTFIX)
+SCRIPTS = cs-config cs-uninstall
+SQLFILES = cs-initdb.sql.tmpl
+HTTPFILES = cloud-scheduler-http.conf
+LDSOFILES = cloud-scheduler.conf
 
+FILES = $(SCRIPTS) $(SQLFILES) $(HTTPFILES) $(LDSOFILES)
+
+SEDSPEC += \
+	-e 's/DBUSER/$(DBUSER)/g' \
+	-e 's/DBNAME/$(DBNAME)/g' \
+	-e 's/DBSCHEMA/$(DBSCHEMA)/g' \
+	-e 's/DBDATA/$(DBDATA)/g' \
+	-e 's/CSNAME/$(CSNAME)/g'
+
+
+%: %.in
+	$(SED) $(SEDSPEC) $^ > $@
+
+build: $(SCRIPTS) $(SQLFILES)
+	
 install::
-	cp -R $(PKGNAME)/UI $(ROOT)/$(PKGROOT)
+
+	mkdir -p $(ROOT)/etc/httpd/conf.d
+	install -m 644 $(HTTPFILES) $(ROOT)/etc/httpd/conf.d/cloud-scheduler.conf
+
+	mkdir -p $(ROOT)/etc/ld.so.conf.d
+	install -m 644 $(LDSOFILES) $(ROOT)/etc/ld.so.conf.d
+	
+	mkdir -p $(ROOT)/$(PKGROOT)/bin
+	install -m 755 $(SCRIPTS) $(ROOT)/$(PKGROOT)/bin
 
 	mkdir -p $(ROOT)/$(PKGROOT)/etc
-	$(INSTALL) -m 640 $(PKGNAME)/db/*.sql* $(ROOT)/$(PKGROOT)/etc
-
-	mkdir -p $(ROOT)/$(WWWROOT)
-	cp -R $(PKGNAME)/UI/dist/* $(ROOT)/$(WWWROOT)
-
-	mkdir -p $(ROOT)/$(WWWROOT)/scripts
-	$(INSTALL) -m 755 $(PKGNAME)/scripts/*.py  $(ROOT)/$(WWWROOT)/scripts
+	$(INSTALL) -m 640 $(SQLFILES) $(ROOT)/$(PKGROOT)/etc
 
 clean::
-	rm -rf $(PKGNAME)
+	rm -rf $(SQLFILES) $(SCRIPTS) 
+

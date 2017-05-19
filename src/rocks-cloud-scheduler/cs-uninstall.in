@@ -2,8 +2,8 @@
 
 # Remove previously installed rpm and db
 
-rpm -el NAME
-rm -rf /opt/NAME
-rm -rf /var/www/html/NAME
+rpm -el CSNAME
+rm -rf /opt/CSNAME
+rm -rf /var/www/html/CSNAME
 mysql -e "drop database DBNAME;"
 

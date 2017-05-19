@@ -8,12 +8,12 @@ getPassword () {
 
 # default variables
 setDefaults () {
-    DBname=DBNAME                           # db name
-    DBuser=DBUSER                           # db user 
+    DBname=DBNAME					# db name
+    DBuser=DBUSER					# db user 
 
-    ETCDIR=/opt/NAME/etc                    # directory with suport scripts and files
-    DB_SCHEMA=$ETCDIR/DBSCHEMA.sql     # db schema pragma-initdb.sql.tmpl
-    DB_DATA=$ETCDIR/DBDATA.sql              # db data
+    ETCDIR=/opt/CSNAME/etc				# directory with suport scripts and files
+    DB_SCHEMA=$ETCDIR/DBSCHEMA.sql			# db schema pragma-initdb.sql.tmpl
+    DB_DATA=$ETCDIR/DBDATA.sql				# db data
 
     # files with password for DB access
     pass1=$ETCDIR/$DBuser.pass
@@ -22,8 +22,8 @@ setDefaults () {
     # get host-specific values
     LOCALHOST=`hostname`
     DBPASSWD=$(getPassword 10)
-    DBPASSWD='pragma28'                    # FIXME, temp for debugging
-    EXT=`date +%Y%m%d-%H%M`                # extention to append to saved files
+    DBPASSWD='pragma28'					# FIXME, temp for debugging
+    EXT=`date +%Y%m%d-%H%M`				# extention to append to saved files
 }
 
 updateFiles () {
