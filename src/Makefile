@@ -58,8 +58,6 @@
 -include $(shell $(ROCKSROOT)/bin/arch).mk
 -include $(shell $(ROCKSROOT)/bin/os).mk
 
-SRCDIRS = cloud-scheduler
-
 default:	pkg
 
 copyright pkg rpm clean::
