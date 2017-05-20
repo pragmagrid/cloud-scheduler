@@ -3,7 +3,12 @@
 # Remove previously installed rpm and db
 
 rpm -el CSNAME
+rpm -el CSNAME-nodejs
+rpm -el CSNAME-MySQL-python
+rpm -el rocks-CSNAME
+
 rm -rf /opt/CSNAME
 rm -rf /var/www/html/CSNAME
+
 mysql -e "drop database DBNAME;"
 
