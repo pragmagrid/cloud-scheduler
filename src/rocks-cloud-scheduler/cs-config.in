@@ -19,7 +19,6 @@ setDefaults () {
 
     # files with password for DB access
     pass1=$ETCDIR/$DBuser.pass
-    pass2=$ETCDIR/install.pass
 
     # get host-specific values
     LOCALHOST=`hostname`
@@ -53,11 +52,10 @@ saveFile () {
 createPassFile () {
     # save previous if exist
     saveFile $pass1
-    saveFile $pass2
 
     # create files with paswords for DB access 
     echo $DBPASSWD > $pass1
-    chmod 600 $pass1 $pass2
+    chmod 600 $pass1 
 }
 
 updateConfigFile () {
