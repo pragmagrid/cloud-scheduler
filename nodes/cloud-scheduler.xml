@@ -16,17 +16,25 @@
 	</changelog>
 
 	<package>cloud-scheduler</package>
+	<package>cloud-scheduler-nodejs</package>
+	<package>cloud-scheduler-MySQL-python</package>
+	<package>rocks-cloud-scheduler</package>
 
 <post>
+
 if [ ! -f /var/lock/subsys/mysqld ]; then
     /etc/init.d/mysqld start
-    else
-        /etc/init.d/mysqld restart
-        fi
+else
+    /etc/init.d/mysqld restart
+fi
 
 /sbin/chkconfig mysqld on
 
-/opt/cloud-scheduler/bin/updateConfig 
+/sbin/ldconfig
+/sbin/service httpd restart
+
+/opt/cloud-scheduler/bin/cs-config 
+
 </post>
 
 </kickstart>
