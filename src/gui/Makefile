@@ -72,6 +72,8 @@ build:
 	tar xzvf $(PKGNAME)-$(VERSION).$(TARBALL_POSTFIX)
 
 install::
+
+	mkdir -p $(ROOT)/$(PKGROOT)
 	cp -R $(PKGNAME)/UI $(ROOT)/$(PKGROOT)
 
 	mkdir -p $(ROOT)/$(PKGROOT)/etc
