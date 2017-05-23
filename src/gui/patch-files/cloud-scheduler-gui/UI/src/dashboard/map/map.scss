@@ -9,10 +9,10 @@
     .timezone{
         position: absolute;
         display: flex;
-        justify-content: center;
+        justify-content: flex-start;
         z-index: 2;
         top: 0px;
-        left: 0px;
+        left: 5px;
         color: #a1d7f5;
         border: 0px solid #a1d7f5;
         font-weight: bold;
@@ -27,10 +27,11 @@
             font-family: $font-primary;
             .icon{
                 width: 36px;
+                flex: none;
             }
             .text{
                 padding-left: 0px;
-                padding-right: 10px;
+                padding-right: 5px;
                 .time{
                     margin-top: 5px;
                     font-size: 14px;
