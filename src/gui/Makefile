@@ -59,13 +59,10 @@ REDHAT.ROOT = $(CURDIR)/../../
 include Rules.mk
 
 prep: 
-
 	git clone https://github.com/pragmagrid/cloud-scheduler-gui
-	(cd patch-files && find . -type f | grep -v CVS | cpio -pduv ../)
 	( \
 		cd cloud-scheduler-gui/UI;  \
 		npm install;                \
-		npm run build-unix;         \
 	)
 	@if test -f $(PERLFILE); then \
 		rm -rf $(PERLFILE)  ; \
@@ -75,6 +72,11 @@ prep:
 
 build: 
 	tar xzvf $(PKGNAME)-$(VERSION).$(TARBALL_POSTFIX)
+	(cd patch-files && find . -type f | grep -v CVS | cpio -pduv ../)
+	( \
+		cd cloud-scheduler-gui/UI;  \
+		npm run build-unix;         \
+	)
 
 install::
 
