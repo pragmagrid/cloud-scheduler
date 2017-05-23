@@ -16,6 +16,7 @@ setDefaults () {
     DB_DATA=$ETCDIR/DBDATA.sql				# db data
 
     APPJS=/var/www/html/CSNAME/app.js			# GUI main driver file
+    USERPY=/var/www/html/CSNAME/scripts/User.py		# python script
 
     # files with password for DB access
     pass1=$ETCDIR/$DBuser.pass
@@ -28,50 +29,41 @@ setDefaults () {
 }
 
 updateFiles () {
-    # save files if present 
-    saveFile $DB_SCHEMA
-
-    # create files from templates
-    cp -p $DB_SCHEMA.tmpl $DB_SCHEMA
-
-    # update values
-    updateConfigFile $DB_SCHEMA
-
-    # update host name  values
-    updateJsFile $APPJS
+    # create a file to initialize a database
+    saveFile $DB_SCHEMA               # save old if present
+    cp -p $DB_SCHEMA.tmpl $DB_SCHEMA  # start with a template
+    updateConfigFile $DB_SCHEMA       # update DB access values
 }
 
-# save file if exist
 saveFile () {
+    # save file if exist
     if [ -f $1 ]; then
         cp -p $1 $1.$EXT
     fi
 }
 
-# save db user passwords
 createPassFile () {
-    # save previous if exist
+    # create a file with pasword for DB access, save previous if exist
     saveFile $pass1
-
-    # create files with paswords for DB access 
     echo $DBPASSWD > $pass1
     chmod 600 $pass1 
 }
 
 updateConfigFile () {
     echo "Updating  file $1"
-    sed -i "s/LOCALHOST/$LOCALHOST/g" $1
     sed -i "s/DBPASSWD/$DBPASSWD/g" $1
 }
 
-updateJsFile () {
+updateHostName () {
+    # update place holder for a hostname with FQDN in a file
     echo "Updating  file $1"
     sed -i "s/LOCALHOST/$LOCALHOST/g" $1
 }
 
-# create database and load data
 createDB () {
+    # create database and load data
     createPassFile
+
     echo "Creating $DBname database..."
     mysql < $DB_SCHEMA
 
@@ -82,5 +74,7 @@ createDB () {
 #### Main ####
 setDefaults
 updateFiles
+updateHostName $APPJS
+updateHostName $USERPY
 createDB
 
