@@ -1,0 +1,109 @@
+@import '../../sass/_colors.scss';
+@import '../../sass/_fonts.scss';
+
+#map{
+    position: fixed;
+    background-color: $text-color-secondary;
+    height: calc(100% - 49px);
+    width: calc(100% - 220px);
+    .timezone{
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        z-index: 2;
+        top: 0px;
+        left: 0px;
+        color: #a1d7f5;
+        border: 0px solid #a1d7f5;
+        font-weight: bold;
+        border-radius: 5px;
+        height: 50px;
+        padding: 3px;
+        width: 310px;
+        font-family: $font-primary;
+        .wrap{
+            display: flex;
+            flex-direction: row;
+            font-family: $font-primary;
+            .icon{
+                width: 36px;
+            }
+            .text{
+                padding-left: 0px;
+                padding-right: 10px;
+                .time{
+                    margin-top: 5px;
+                    font-size: 14px;
+                }
+                .utc{
+                    margin-top: 1px;
+                    font-size: 10px;
+                }
+            }
+        }
+    }
+    .zoomcontrol{
+        position: absolute;
+        right: -70px;
+        bottom: 105px;
+        z-index: 2;
+        transform: rotate(270deg);
+        display: flex;
+        flex-direction: rows;
+        .zoomslider{
+            margin: 0px 5px 2px 5px;
+        }
+        .zoombtn{
+            display: flex;
+            justify-content: center;
+            background-color: #739AAF;
+            border: 2px solid #739AAF;
+            border-radius: 3px;
+            box-shadow: 0 2px 6px rgba(0,0,0,.3);
+            width: 20px;
+            height: 20px;
+            box-sizing: border-box;
+            transform: rotate(270deg);
+        }
+        .zoombtn:hover{
+            cursor: pointer;
+        }
+        .icon{
+            width: 14px;
+        }
+    }
+    .search{
+        display: flex;
+        position: absolute;
+        z-index: 2;
+        top: 10px;
+        right: 10px;
+        width: 164px;
+        background-color: #3D4358;
+        border-radius: 2px;
+        border: 1px solid #242939;
+        .input{
+            padding: 4px;
+            padding-left: 4px;
+            border-radius: 2px;
+            border: none;
+            outline: none;
+            background-color: #3D4358;
+            color: $text-color-secondary;
+            font: $font-primary;
+            width: 110px;
+        }
+        .searchicon{
+            padding-left: 4px;
+            width: 18px;
+        }
+        .cancelicon{
+            width: 18px;
+            padding-left: 3px;
+        }
+    }
+    .display{
+        width: 100%;
+        height: 100%;
+    }
+}
