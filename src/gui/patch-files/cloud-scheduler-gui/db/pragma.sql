@@ -276,7 +276,7 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`user_id`, `username`, `password`, `firstname`, `lastname`, `email`, `phone`, `status`, `organization`, `position`, `language`, `timezone`, `public_key`) VALUES
-(1, 'pragmac', 'd404559f602eab6fd602ac7680dacbfaadd13630335e951f097af3900e9de176b6db28512f2e000b9d04fba5133e8b1c6e8df59db3a8ab9d60be4b97cc9e81db', 'Pragma', 'Admin', 'root@localhost', NULL, 'user', '-', '-', 'EN', 'America/Los_Angeles', 'AAAAAAA');
+(1, 'pragmac', 'd404559f602eab6fd602ac7680dacbfaadd13630335e951f097af3900e9de176b6db28512f2e000b9d04fba5133e8b1c6e8df59db3a8ab9d60be4b97cc9e81db', 'Pragma', 'Admin', 'root@localhost', NULL, 'admin', '-', '-', 'EN', 'America/Los_Angeles', 'AAAAAAA');
 
 --
 -- Indexes for dumped tables
