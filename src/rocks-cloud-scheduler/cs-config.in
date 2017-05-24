@@ -29,8 +29,12 @@ setDefaults () {
 
     # generate password
     DBPASSWD=$(getPassword 10)
-    DBPASSWD='pragma28'					# FIXME, temp for debugging
     SHA512HASH=`$BINDIR/sha512.py $DBPASSWD`
+
+    # start log file
+    CSLOG=/tmp/cs-config.log
+    saveFile $CSLOG
+    cat /dev/null > $CSLOG
 }
 
 updateFiles () {
@@ -43,6 +47,10 @@ updateFiles () {
     saveFile $DB_ADMIN               # save old if present
     cp -p $DB_ADMIN.tmpl $DB_ADMIN   # start with a template
     updateConfigFile $DB_ADMIN       # update DB access values
+
+    # update FQDN in GUI files
+    updateHostName $APPJS
+    updateHostName $USERPY
 }
 
 saveFile () {
@@ -60,14 +68,14 @@ createPassFile () {
 }
 
 updateConfigFile () {
-    echo "Updating  file $1"
+    echo "Updating  file $1" | tee -a $CSLOG
     sed -i "s/DBPASSWD/$DBPASSWD/g" $1
     sed -i "s/SHA512HASH/$SHA512HASH/g" $1
 }
 
 updateHostName () {
     # update place holder for a hostname with FQDN in a file
-    echo "Updating  file $1"
+    echo "Updating  file $1" | tee -a $CSLOG
     sed -i "s/LOCALHOST/$LOCALHOST/g" $1
 }
 
@@ -75,20 +83,18 @@ createDB () {
     # create database and load data
     createPassFile
 
-    echo "Creating $DBname database..."
-    mysql < $DB_SCHEMA
+    echo "Creating $DBname database..." | tee -a $CSLOG
+    mysql < $DB_SCHEMA 2>&1 | tee -a $CSLOG
 
-    echo "Inserting data into database  $DBname ..."
-    mysql -D $DBname < $DB_DATA
+    echo "Inserting data into database  $DBname ..." | tee -a $CSLOG
+    mysql -D $DBname < $DB_DATA 2>&1 | tee -a $CSLOG
 
-    echo "Updating admin access in the database  $DBname ..."
-    mysql -D $DBname < $DB_ADMIN
+    echo "Updating admin access in the database  $DBname ..." | tee -a $CSLOG
+    mysql -D $DBname < $DB_ADMIN 2>&1 | tee -a $CSLOG
 }
 
 #### Main ####
 setDefaults
 updateFiles
-updateHostName $APPJS
-updateHostName $USERPY
 createDB
 
