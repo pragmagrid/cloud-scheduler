@@ -62,7 +62,7 @@ include Rules.mk
 PY.PATH = /opt/python/bin/$(PYTHONVER)
 
 SCRIPTS = cs-config cs-uninstall
-SQLFILES = cs-initdb.sql.tmpl
+SQLFILES = cs-initdb.sql.tmpl  cs-admin.sql.tmpl
 HTTPFILES = cloud-scheduler-http.conf
 LDSOFILES = cloud-scheduler.conf
 
@@ -72,6 +72,7 @@ SEDSPEC += \
 	-e 's/DBUSER/$(DBUSER)/g' \
 	-e 's/DBNAME/$(DBNAME)/g' \
 	-e 's/DBSCHEMA/$(DBSCHEMA)/g' \
+	-e 's/DBADMIN/$(DBADMIN)/g' \
 	-e 's/DBDATA/$(DBDATA)/g' \
 	-e 's/CSNAME/$(CSNAME)/g'
 
@@ -91,6 +92,7 @@ install::
 	
 	mkdir -p $(ROOT)/$(PKGROOT)/bin
 	install -m 755 $(SCRIPTS) $(ROOT)/$(PKGROOT)/bin
+	install -m 755 sha512.py  $(ROOT)/$(PKGROOT)/bin
 
 	mkdir -p $(ROOT)/$(PKGROOT)/etc
 	$(INSTALL) -m 640 $(SQLFILES) $(ROOT)/$(PKGROOT)/etc

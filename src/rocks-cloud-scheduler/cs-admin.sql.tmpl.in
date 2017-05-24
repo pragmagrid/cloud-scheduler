@@ -1,0 +1,5 @@
+
+update user set password = 'SHA512HASH' where username = 'DBUSER';
+
+
+

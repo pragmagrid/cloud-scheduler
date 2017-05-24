@@ -9,5 +9,6 @@ RELEASE = 0
 DBNAME    = pragma
 DBUSER    = pragmac
 DBSCHEMA  = cs-initdb
+DBADMIN   = cs-admin
 DBDATA    = pragma
 

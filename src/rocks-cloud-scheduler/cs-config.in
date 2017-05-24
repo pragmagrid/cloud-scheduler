@@ -11,9 +11,11 @@ setDefaults () {
     DBname=DBNAME					# db name
     DBuser=DBUSER					# db user 
 
-    ETCDIR=/opt/CSNAME/etc				# directory with suport scripts and files
+    ETCDIR=/opt/CSNAME/etc				# directory with DB files
+    BINDIR=/opt/CSNAME/bin				# directory with suport scripts and files
     DB_SCHEMA=$ETCDIR/DBSCHEMA.sql			# db schema pragma-initdb.sql.tmpl
     DB_DATA=$ETCDIR/DBDATA.sql				# db data
+    DB_ADMIN=$ETCDIR/DBADMIN.sql			# db admin access update
 
     APPJS=/var/www/html/CSNAME/app.js			# GUI main driver file
     USERPY=/var/www/html/CSNAME/scripts/User.py		# python script
@@ -23,16 +25,24 @@ setDefaults () {
 
     # get host-specific values
     LOCALHOST=`hostname`
+    EXT=`date +%Y%m%d-%H%M`				# extention to append to saved files
+
+    # generate password
     DBPASSWD=$(getPassword 10)
     DBPASSWD='pragma28'					# FIXME, temp for debugging
-    EXT=`date +%Y%m%d-%H%M`				# extention to append to saved files
+    SHA512HASH=`$BINDIR/sha512.py $DBPASSWD`
 }
 
 updateFiles () {
     # create a file to initialize a database
     saveFile $DB_SCHEMA               # save old if present
     cp -p $DB_SCHEMA.tmpl $DB_SCHEMA  # start with a template
-    updateConfigFile $DB_SCHEMA       # update DB access values
+    updateConfigFile $DB_SCHEMA       # update DB schema values
+
+    # update db admin access  
+    saveFile $DB_ADMIN               # save old if present
+    cp -p $DB_ADMIN.tmpl $DB_ADMIN   # start with a template
+    updateConfigFile $DB_ADMIN       # update DB access values
 }
 
 saveFile () {
@@ -52,6 +62,7 @@ createPassFile () {
 updateConfigFile () {
     echo "Updating  file $1"
     sed -i "s/DBPASSWD/$DBPASSWD/g" $1
+    sed -i "s/SHA512HASH/$SHA512HASH/g" $1
 }
 
 updateHostName () {
@@ -69,6 +80,9 @@ createDB () {
 
     echo "Inserting data into database  $DBname ..."
     mysql -D $DBname < $DB_DATA
+
+    echo "Updating admin access in the database  $DBname ..."
+    mysql -D $DBname < $DB_ADMIN
 }
 
 #### Main ####
