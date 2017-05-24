@@ -6,11 +6,6 @@ PKGNAME = cloud-scheduler-gui
 VERSION   = 1.0
 RELEASE   = 0
 
-DBNAME    = pragma
-DBUSER    = pragmac
-DBSCHEMA  = cs-initdb
-DBDATA    = pragma
-
 PERLFILE = $(PKGNAME)/UI/node_modules/node-sass/src/libsass/script/test-leaks.pl
 
 TARBALL_POSTFIX = tar.gz
