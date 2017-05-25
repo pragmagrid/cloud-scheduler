@@ -4,6 +4,8 @@
 # Build node_modules as cloud scheduler GUI distro
 # 
 
+# googe drive link for rolls/cloud-scheduler/
+export SURL="https://googledrive.com/host/0BzgozEGuMWotM21ZeS02dHJYek0"
 . /opt/rocks/share/devel/src/roll/etc/bootstrap-functions.sh
 
 # install nodejs
