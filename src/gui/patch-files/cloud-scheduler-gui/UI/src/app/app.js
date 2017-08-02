@@ -57,7 +57,8 @@ export default class App extends Component {
         let lastname = data.lastname.toLowerCase()
         firstname = firstname.charAt(0).toUpperCase()+firstname.slice(1)
         lastname = lastname.charAt(0).toUpperCase()+lastname.slice(1)
-        let name = firstname+' '+lastname
+        let name = firstname+' '+lastname+' | '
+
 
         let {isLogedIn} = this.state.authen
         if(!isLogedIn){
