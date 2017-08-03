@@ -37,7 +37,7 @@ Building a roll
 Checkout roll distribution from git repo :: 
 
    # git clone https://github.com/pragmagrid/cloud-scheduler
-   # cd cloud-schedulerserver/
+   # cd cloud-scheduler/
 
 To build a roll, first execute a script that build nodejs and installs cloud-scheduler-gui
 source distro :: 
