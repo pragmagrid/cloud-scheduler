@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: May 06, 2017 at 02:24 AM
+-- Generation Time: Jun 04, 2017 at 12:44 PM
 -- Server version: 10.1.13-MariaDB
 -- PHP Version: 7.0.8
 
@@ -14,7 +14,7 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+/*!40101 SET NAMES utf8mb4 */;
 
 --
 -- Database: `pragma`
@@ -59,6 +59,7 @@ INSERT INTO `connection_type` (`site_id`, `connection_type_id`) VALUES
 (6, 2),
 (7, 1),
 (8, 1);
+(10, 1);
 
 -- --------------------------------------------------------
 
@@ -83,6 +84,27 @@ INSERT INTO `connection_type_desc` (`connection_type_id`, `name`, `description`)
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `forget_password`
+--
+
+CREATE TABLE `forget_password` (
+  `id` varchar(16) NOT NULL,
+  `user_id` bigint(20) UNSIGNED NOT NULL,
+  `password` varchar(128) NOT NULL,
+  `timestamp` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `forget_password`
+--
+
+INSERT INTO `forget_password` (`id`, `user_id`, `password`, `timestamp`) VALUES
+('QR6Q5C07NGRILYQ7', 1, '3627909a29c31381a071ec27f7c9ca97726182aed29a7ddd2e54353322cfb30abb9e3a6df2ac2c20fe23436311d678564d0c8d305930575f60e2d3d048184d79', '2017-06-03 16:47:03'),
+('RXE6R4H2AEOY4J2X', 3, '3627909a29c31381a071ec27f7c9ca97726182aed29a7ddd2e54353322cfb30abb9e3a6df2ac2c20fe23436311d678564d0c8d305930575f60e2d3d048184d79', '2017-06-03 16:49:15');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `image_type`
 --
 
@@ -98,27 +120,44 @@ CREATE TABLE `image_type` (
 INSERT INTO `image_type` (`site_id`, `image_type_id`) VALUES
 (1, 1),
 (1, 2),
+(1, 3),
+(1, 4),
 (2, 1),
 (2, 2),
+(2, 3),
+(2, 4),
 (3, 1),
 (3, 2),
 (3, 3),
+(3, 4),
 (4, 1),
+(4, 2),
 (4, 3),
+(4, 4),
 (5, 1),
+(5, 2),
 (5, 3),
 (5, 4),
 (6, 1),
+(6, 2),
 (6, 3),
 (6, 4),
 (7, 1),
-(7, 4),
 (7, 2),
+(7, 3),
+(7, 4),
 (8, 1),
 (8, 2),
+(8, 3),
+(8, 4),
 (9, 1),
+(9, 2),
 (9, 3),
-(10, 1);
+(9, 4),
+(10, 1),
+(10, 2),
+(10, 3),
+(10, 4);
 
 -- --------------------------------------------------------
 
@@ -138,7 +177,7 @@ CREATE TABLE `image_type_desc` (
 
 INSERT INTO `image_type_desc` (`image_type_id`, `name`, `description`) VALUES
 (1, 'centos7', 'CentOS7'),
-(2, 'biolinux', '-'),
+(2, 'hku_biolinux', '-'),
 (3, 'rocks-basic', 'no description'),
 (4, 'rocks-sge', 'none');
 
@@ -156,7 +195,7 @@ CREATE TABLE `reservation` (
   `start` datetime NOT NULL,
   `end` datetime NOT NULL,
   `reference_number` varchar(32) NOT NULL,
-  `image_type` varchar(16) NOT NULL,
+  `image_type` bigint(20) UNSIGNED NOT NULL,
   `type` varchar(64) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -183,15 +222,9 @@ CREATE TABLE `schedule` (
 CREATE TABLE `session` (
   `user_id` bigint(20) UNSIGNED NOT NULL,
   `session_id` varchar(16) NOT NULL,
-  `last_login` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  `last_login` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `status` tinyint(1) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `session`
---
-
-INSERT INTO `session` (`user_id`, `session_id`, `last_login`) VALUES
-(1, 'HWOUYP', '2017-05-05 19:29:05');
 
 -- --------------------------------------------------------
 
@@ -201,7 +234,7 @@ INSERT INTO `session` (`user_id`, `session_id`, `last_login`) VALUES
 
 CREATE TABLE `site` (
   `site_id` bigint(20) UNSIGNED NOT NULL,
-  `name` varchar(16) NOT NULL,
+  `name` varchar(32) NOT NULL,
   `description` varchar(64) NOT NULL,
   `contact` varchar(32) NOT NULL,
   `location` varchar(64) NOT NULL,
@@ -223,16 +256,16 @@ CREATE TABLE `site` (
 --
 
 INSERT INTO `site` (`site_id`, `name`, `description`, `contact`, `location`, `pragma_boot_path`, `pragma_boot_version`, `python_path`, `temp_dir`, `username`, `deployment_type`, `site_hostname`, `latitude`, `longitude`, `total_cpu`, `total_memory`) VALUES
-(1, 'NCHC cloud', 'Rocks. Hosting virtual clusters and virtual machines', 'serenapan@nchc.narl.org.tw', 'National Center for High-Performance Computing', '/opt/pragma_boot', 2, '/opt/pragma_boot', '/var/run/pcc', 'root', 'Rocks KVM', 'pragma.nchc.org.tw', 24.81383, 120.967475, 16, 32),
-(2, 'AIST Cloud', 'Cloudstack. Hosting Virtual clusters and virtual machines.', 'jh.haga@aist.go.jp', 'Cloudstack. Hosting Virtual clusters and virtual machines.', '/home/ssmallen/pragma_boot', 2, '-', '/home/ssmallen/pcc', 'ssmallen', 'Rocks KVM', 'pragma.aist.org', 36.060839, 140.137303, 32, 64),
-(3, 'ABCD cloud', 'Rocks. Hosting virtual clusters and virtual machines', 'serenapan@nchc.narl.org.tw', 'National Center for High-Performance Computing', '/opt/pragma_boot', 2, '/opt/pragma_boot', '/var/run/pcc', 'root', 'Rocks KVM', 'pragma.nchc.org.tw', 41.8339042, -88.0123419, 128, 32),
-(4, 'A1 cloud', 'Rocks. Hosting virtual clusters and virtual machines', 'serenapan@nchc.narl.org.tw', 'National Center for High-Performance Computing', '/opt/pragma_boot', 2, '/opt/pragma_boot', '/var/run/pcc', 'root', 'Rocks KVM', 'pragma.nchc.org.tw', 42.7364923, -78.0523389, 64, 64),
-(5, 'TOS cloud', 'Rocks. Hosting virtual clusters and virtual machines', 'serenapan@nchc.narl.org.tw', 'National Center for High-Performance Computing', '/opt/pragma_boot', 2, '/opt/pragma_boot', '/var/run/pcc', 'root', 'Rocks KVM', 'pragma.nchc.org.tw', 30.5621124, -86.1100215, 64, 32),
-(6, 'TP cloud', 'Rocks. Hosting virtual clusters and virtual machines', 'serenapan@nchc.narl.org.tw', 'National Center for High-Performance Computing', '/opt/pragma_boot', 2, '/opt/pragma_boot', '/var/run/pcc', 'root', 'Rocks KVM', 'pragma.nchc.org.tw', 24.7849113, 90.3579546, 32, 64),
-(7, 'UCSD cloud', 'Rocks. Hosting virtual clusters and virtual machines', 'serenapan@nchc.narl.org.tw', 'National Center for High-Performance Computing', '/opt/pragma_boot', 2, '/opt/pragma_boot', '/var/run/pcc', 'root', 'Rocks KVM', 'pragma.nchc.org.tw', 32.8248175, -115.1879546, 64, 128),
-(8, 'TW cloud', 'Rocks. Hosting virtual clusters and virtual machines', 'serenapan@nchc.narl.org.tw', 'National Center for High-Performance Computing', '/opt/pragma_boot', 2, '/opt/pragma_boot', '/var/run/pcc', 'root', 'Rocks KVM', 'pragma.nchc.org.tw', 23.4790323, 120.4142769, 64, 64),
-(9, 'B1 cloud', 'Rocks. Hosting virtual clusters and virtual machines', 'serenapan@nchc.narl.org.tw', 'National Center for High-Performance Computing', '/opt/pragma_boot', 2, '/opt/pragma_boot', '/var/run/pcc', 'root', 'Rocks KVM', 'pragma.nchc.org.tw', 55.1879546, 65.1879546, 32, 32),
-(10, 'CC cloud', 'Rocks. Hosting virtual clusters and virtual machines', 'serenapan@nchc.narl.org.tw', 'National Center for High-Performance Computing', '/opt/pragma_boot', 2, '/opt/pragma_boot', '/var/run/pcc', 'root', 'Rocks KVM', 'pragma.nchc.org.tw', 47.1879546, 8.0834012, 16, 16);
+(1, 'NCHC cloud', 'Rocks. Hosting virtual clusters and virtual machines', 'serenapan@nchc.narl.org.tw', 'National Center for High-Performance Computing', '/opt/pragma_boot', 2, '/opt/python/bin/python', '/var/run/pcc', 'root', 'Rocks KVM', 'pragma.nchc.org.tw', 24.81383, 120.967475, 16, 32),
+(2, 'AIST Cloud', 'Cloudstack. Hosting Virtual clusters and virtual machines.', 'jh.haga@aist.go.jp', 'Cloudstack. Hosting Virtual clusters and virtual machines.', '/home/ssmallen/pragma_boot', 2, '/opt/python/bin/python', '/home/ssmallen/pcc', 'ssmallen', 'Rocks KVM', 'pragma.aist.org', 36.060839, 140.137303, 32, 64),
+(3, 'Indiana University cloud', 'Rocks 6.2 KVM. Hosting Virtual clusters and virtual machines.', 'quzhou@umail.iu.edu', 'Indiana University', '/opt/pragma_boot', 2, '/opt/python/bin/python', '/var/run/pcc', 'root', 'Rocks KVM', 'pragma8.cs.indiana.edu', 39.1704, -86.5143, 16, 64),
+(4, 'NAIST cloud', 'Rocks 6.2 KVM. Hosting Virtual clusters and virtual machines.', 'sd-rocks00.naist.jp', 'NAIST', '/opt/pragma_boot', 2, '/opt/python/bin/python', '/var/run/pcc', 'root', 'Rocks KVM', 'sd-rocks00.naist.jp', 34.6853, 135.8328, 92, 192),
+(5, 'TOS cloud', 'Rocks. Hosting virtual clusters and virtual machines', 'serenapan@nchc.narl.org.tw', 'National Center for High-Performance Computing', '/opt/pragma_boot', 2, '/opt/python/bin/python', '/var/run/pcc', 'root', 'Rocks KVM', 'pragma.nchc.org.tw', 30.5621124, -86.1100215, 64, 32),
+(6, 'TP cloud', 'Rocks. Hosting virtual clusters and virtual machines', 'serenapan@nchc.narl.org.tw', 'National Center for High-Performance Computing', '/opt/pragma_boot', 2, '/opt/python/bin/python', '/var/run/pcc', 'root', 'Rocks KVM', 'pragma.nchc.org.tw', 24.7849113, 90.3579546, 32, 64),
+(7, 'UCSD cloud', 'Rocks. Hosting virtual clusters and virtual machines', 'serenapan@nchc.narl.org.tw', 'National Center for High-Performance Computing', '/opt/pragma_boot', 2, '/opt/python/bin/python', '/var/run/pcc', 'root', 'Rocks KVM', 'calit2-119-121.ucsd.edu', 32.8248175, -115.1879546, 64, 128),
+(8, 'TW cloud', 'Rocks. Hosting virtual clusters and virtual machines', 'serenapan@nchc.narl.org.tw', 'National Center for High-Performance Computing', '/opt/pragma_boot', 2, '/opt/python/bin/python', '/var/run/pcc', 'root', 'Rocks KVM', 'pragma.nchc.org.tw', 23.4790323, 120.4142769, 64, 64),
+(9, 'B1 cloud', 'Rocks. Hosting virtual clusters and virtual machines', 'serenapan@nchc.narl.org.tw', 'National Center for High-Performance Computing', '/opt/pragma_boot', 2, '/opt/python/bin/python', '/var/run/pcc', 'root', 'Rocks KVM', 'pragma.nchc.org.tw', 55.1879546, 65.1879546, 32, 32),
+(10, 'CC cloud', 'Rocks. Hosting virtual clusters and virtual machines', 'serenapan@nchc.narl.org.tw', 'National Center for High-Performance Computing', '/opt/pragma_boot', 2, '/opt/python/bin/python', '/var/run/pcc', 'root', 'Rocks KVM', 'pragma.nchc.org.tw', 47.1879546, 8.0834012, 128, 64);
 
 -- --------------------------------------------------------
 
@@ -244,7 +277,7 @@ CREATE TABLE `site_reserved` (
   `reservation_id` bigint(20) UNSIGNED NOT NULL,
   `site_id` bigint(20) UNSIGNED NOT NULL,
   `status` varchar(16) NOT NULL,
-  `admin_description` longtext DEFAULT NULL,
+  `admin_description` longtext,
   `cpu` int(11) NOT NULL,
   `memory` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -276,7 +309,14 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`user_id`, `username`, `password`, `firstname`, `lastname`, `email`, `phone`, `status`, `organization`, `position`, `language`, `timezone`, `public_key`) VALUES
-(1, 'pragmac', 'd404559f602eab6fd602ac7680dacbfaadd13630335e951f097af3900e9de176b6db28512f2e000b9d04fba5133e8b1c6e8df59db3a8ab9d60be4b97cc9e81db', 'Pragma', 'Admin', 'root@localhost', NULL, 'admin', '-', '-', 'EN', 'America/Los_Angeles', 'AAAAAAA');
+(1, 'project401', 'd404559f602eab6fd602ac7680dacbfaadd13630335e951f097af3900e9de176b6db28512f2e000b9d04fba5133e8b1c6e8df59db3a8ab9d60be4b97cc9e81db', 'nannapas', 'banluesombatkul', 'bamboojfc@gmail.com', NULL, 'admin', 'TU', 'student', 'TH', 'America/New_York', 'AAAAB3NzaC1yc2EAAAABJQAAAQEA2sl4a0TnLMUmqBUqOaiYiAq83aYwfvMFjekYOqHhS2O9jczt+8hbZsZo6FnwMec5SVpTSkh1R2BB+ForkhWK/XEhKIziGv3xoK3mc7ebAHptl5Uv8zUaittWIFH4AlZoLSmztcWM8MwWucpJ8cO67nZUn/07IVMOdIcjD0uYAdiWJ6HHu/EVJn9S4FegcaF76ha48sTZl9SXy2W0guVzazEjI6u47fPfK844ZLvd6J2XgYLcRuPMRm9Zii17YIdYQ9lr0HaPvidw1Gn920b1Rkz4HdMfwnhB1NDm4T3IXglAM0LZ/yvmlGAsRyAMSNdYMzBMP7Ep7WbUa+gPMojnJQ=='),
+(2, 'admin', 'd404559f602eab6fd602ac7680dacbfaadd13630335e951f097af3900e9de176b6db28512f2e000b9d04fba5133e8b1c6e8df59db3a8ab9d60be4b97cc9e81db', 'prapansak', 'kaewlamul', 'prapansak.kaew@gmail.com', NULL, 'admin', 'TU', 'student', 'TH', 'America/New_York', 'AAAAB3NzaC1yc2EAAAABJQAAAQEA2sl4a0TnLMUmqBUqOaiYiAq83aYwfvMFjekYOqHhS2O9jczt+8hbZsZo6FnwMec5SVpTSkh1R2BB+ForkhWK/XEhKIziGv3xoK3mc7ebAHptl5Uv8zUaittWIFH4AlZoLSmztcWM8MwWucpJ8cO67nZUn/07IVMOdIcjD0uYAdiWJ6HHu/EVJn9S4FegcaF76ha48sTZl9SXy2W0guVzazEjI6u47fPfK844ZLvd6J2XgYLcRuPMRm9Zii17YIdYQ9lr0HaPvidw1Gn920b1Rkz4HdMfwnhB1NDm4T3IXglAM0LZ/yvmlGAsRyAMSNdYMzBMP7Ep7WbUa+gPMojnJQ=='),
+(3, 'test', 'd404559f602eab6fd602ac7680dacbfaadd13630335e951f097af3900e9de176b6db28512f2e000b9d04fba5133e8b1c6e8df59db3a8ab9d60be4b97cc9e81db', 'pragma', '32', 'nannapas.blsbk@gmail.com', NULL, 'user', '-', 'professor', 'EN', 'America/New_York', 'AAAAB3NzaC1yc2EAAAABJQAAAQEA2sl4a0TnLMUmqBUqOaiYiAq83aYwfvMFjekYOqHhS2O9jczt+8hbZsZo6FnwMec5SVpTSkh1R2BB+ForkhWK/XEhKIziGv3xoK3mc7ebAHptl5Uv8zUaittWIFH4AlZoLSmztcWM8MwWucpJ8cO67nZUn/07IVMOdIcjD0uYAdiWJ6HHu/EVJn9S4FegcaF76ha48sTZl9SXy2W0guVzazEjI6u47fPfK844ZLvd6J2XgYLcRuPMRm9Zii17YIdYQ9lr0HaPvidw1Gn920b1Rkz4HdMfwnhB1NDm4T3IXglAM0LZ/yvmlGAsRyAMSNdYMzBMP7Ep7WbUa+gPMojnJQ=='),
+(4, 'user1', 'd404559f602eab6fd602ac7680dacbfaadd13630335e951f097af3900e9de176b6db28512f2e000b9d04fba5133e8b1c6e8df59db3a8ab9d60be4b97cc9e81db', 'USER-NUMBER1', 'TEST', 'snp_vsd_bam@icloud.com', NULL, 'user', '-', 'professor', 'EN', 'America/New_York', 'AAAAB3NzaC1yc2EAAAABJQAAAQEA2sl4a0TnLMUmqBUqOaiYiAq83aYwfvMFjekYOqHhS2O9jczt+8hbZsZo6FnwMec5SVpTSkh1R2BB+ForkhWK/XEhKIziGv3xoK3mc7ebAHptl5Uv8zUaittWIFH4AlZoLSmztcWM8MwWucpJ8cO67nZUn/07IVMOdIcjD0uYAdiWJ6HHu/EVJn9S4FegcaF76ha48sTZl9SXy2W0guVzazEjI6u47fPfK844ZLvd6J2XgYLcRuPMRm9Zii17YIdYQ9lr0HaPvidw1Gn920b1Rkz4HdMfwnhB1NDm4T3IXglAM0LZ/yvmlGAsRyAMSNdYMzBMP7Ep7WbUa+gPMojnJQ=='),
+(5, 'user2', 'd404559f602eab6fd602ac7680dacbfaadd13630335e951f097af3900e9de176b6db28512f2e000b9d04fba5133e8b1c6e8df59db3a8ab9d60be4b97cc9e81db', 'USER-NUMBER2', 'TEST', 'prapansak.kaew@hotmail.com', NULL, 'user', '-', 'professor', 'EN', 'America/New_York', 'AAAAB3NzaC1yc2EAAAABJQAAAQEA2sl4a0TnLMUmqBUqOaiYiAq83aYwfvMFjekYOqHhS2O9jczt+8hbZsZo6FnwMec5SVpTSkh1R2BB+ForkhWK/XEhKIziGv3xoK3mc7ebAHptl5Uv8zUaittWIFH4AlZoLSmztcWM8MwWucpJ8cO67nZUn/07IVMOdIcjD0uYAdiWJ6HHu/EVJn9S4FegcaF76ha48sTZl9SXy2W0guVzazEjI6u47fPfK844ZLvd6J2XgYLcRuPMRm9Zii17YIdYQ9lr0HaPvidw1Gn920b1Rkz4HdMfwnhB1NDm4T3IXglAM0LZ/yvmlGAsRyAMSNdYMzBMP7Ep7WbUa+gPMojnJQ=='),
+(6, 'user3', 'd404559f602eab6fd602ac7680dacbfaadd13630335e951f097af3900e9de176b6db28512f2e000b9d04fba5133e8b1c6e8df59db3a8ab9d60be4b97cc9e81db', 'USER-NUMBER3', 'TEST', 'nannapas.banl@dome.tu.ac.th', NULL, 'user', '-', 'professor', 'EN', 'America/New_York', 'AAAAB3NzaC1yc2EAAAABJQAAAQEA2sl4a0TnLMUmqBUqOaiYiAq83aYwfvMFjekYOqHhS2O9jczt+8hbZsZo6FnwMec5SVpTSkh1R2BB+ForkhWK/XEhKIziGv3xoK3mc7ebAHptl5Uv8zUaittWIFH4AlZoLSmztcWM8MwWucpJ8cO67nZUn/07IVMOdIcjD0uYAdiWJ6HHu/EVJn9S4FegcaF76ha48sTZl9SXy2W0guVzazEjI6u47fPfK844ZLvd6J2XgYLcRuPMRm9Zii17YIdYQ9lr0HaPvidw1Gn920b1Rkz4HdMfwnhB1NDm4T3IXglAM0LZ/yvmlGAsRyAMSNdYMzBMP7Ep7WbUa+gPMojnJQ==');
+(7, 'pragmac', 'd404559f602eab6fd602ac7680dacbfaadd13630335e951f097af3900e9de176b6db28512f2e000b9d04fba5133e8b1c6e8df59db3a8ab9d60be4b97cc9e81db', 'Pragma', 'Admin', 'root@localhost', NULL, 'admin', '-', '-', 'EN', 'America/Los_Angeles', 'AAAAAAA');
+
 
 --
 -- Indexes for dumped tables
@@ -302,6 +342,13 @@ ALTER TABLE `connection_type`
 ALTER TABLE `connection_type_desc`
   ADD PRIMARY KEY (`connection_type_id`),
   ADD UNIQUE KEY `connection_type_id` (`connection_type_id`);
+
+--
+-- Indexes for table `forget_password`
+--
+ALTER TABLE `forget_password`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`);
 
 --
 -- Indexes for table `image_type`
@@ -350,6 +397,13 @@ ALTER TABLE `site`
   ADD UNIQUE KEY `site_id` (`site_id`);
 
 --
+-- Indexes for table `site_reserved`
+--
+ALTER TABLE `site_reserved`
+  ADD KEY `site_id` (`site_id`),
+  ADD KEY `reservation_id` (`reservation_id`);
+
+--
 -- Indexes for table `user`
 --
 ALTER TABLE `user`
@@ -385,7 +439,7 @@ ALTER TABLE `site`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `user_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `user_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
 -- Constraints for dumped tables
 --
@@ -409,10 +463,22 @@ ALTER TABLE `connection_type_desc`
   ADD CONSTRAINT `connection_type_desc_ibfk_1` FOREIGN KEY (`connection_type_id`) REFERENCES `connection_type` (`connection_type_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
+-- Constraints for table `forget_password`
+--
+ALTER TABLE `forget_password`
+  ADD CONSTRAINT `forget_password_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
 -- Constraints for table `image_type`
 --
 ALTER TABLE `image_type`
   ADD CONSTRAINT `image_type_ibfk_1` FOREIGN KEY (`site_id`) REFERENCES `site` (`site_id`);
+
+--
+-- Constraints for table `image_type_desc`
+--
+ALTER TABLE `image_type_desc`
+  ADD CONSTRAINT `image_type_desc_ibfk_1` FOREIGN KEY (`image_type_id`) REFERENCES `image_type` (`image_type_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `reservation`
@@ -431,6 +497,13 @@ ALTER TABLE `schedule`
 --
 ALTER TABLE `session`
   ADD CONSTRAINT `session_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`);
+
+--
+-- Constraints for table `site_reserved`
+--
+ALTER TABLE `site_reserved`
+  ADD CONSTRAINT `site_reserved_ibfk_1` FOREIGN KEY (`site_id`) REFERENCES `site` (`site_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `site_reserved_ibfk_2` FOREIGN KEY (`reservation_id`) REFERENCES `reservation` (`reservation_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
