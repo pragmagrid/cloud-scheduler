@@ -131,3 +131,46 @@ rocks-cloud-scheduler RPM
 
 .. _cloud-scheduler-gui: https://github.com/pragmagrid/cloud-scheduler-gui
 
+Setting up a cloud host alias
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+By default, you can access the Cloud Scheduler via http://myhost.edu/cloud-scheduler.  If you want to enable https and create a friendlier name such as https://cloud.mydomain.edu, you will need to
+
+#. As your administrator to create a DNS host alias (e.g., cloud.mydomain.edu) that points to your host.
+  
+#. Create a SSL host certificate via `Let's Encrypt <https://letsencrypt.org/>`_ or other service.
+
+#. Modify the /etc/httpd/conf.d/cloud-scheduler.conf as follows ::
+
+    NameVirtualHost youripaddress:80
+
+    <VirtualHost myhost.edu:80>
+        ServerName myhost.edu
+        DocumentRoot "/var/www/html"
+    </VirtualHost>
+  
+    <VirtualHost cloud.mydomain.edu:80>
+        ServerName cloud.mydomain.edu
+        DocumentRoot "/var/www/html/cloud-scheduler"
+        Redirect permanent / https://cloud.mydomain.edu/
+        AddHandler cgi-script .cgi .py
+    </VirtualHost>
+    
+    <VirtualHost cloud.mydomain.edu:443>
+        ServerName cloud.mydomain.edu
+        DocumentRoot "/var/www/html/cloud-scheduler"
+        SSLEngine on
+  
+        SSLCertificateFile  /etc/pki/tls/certs/cloud_letsencrypt_cert.pem
+        SSLCertificateKeyFile /etc/pki/tls/private/cloud_letsencrypt_key.pem
+        SSLCertificateChainFile /etc/pki/tls/certs/cloud_letsencrypt_fullchain.pem
+        AddHandler cgi-script .cgi .py
+    </VirtualHost>
+  
+    <Directory /var/www/html/cloud-scheduler>
+       RewriteEngine On
+       RewriteCond %{HTTPS} off
+       RewriteRule (.*) https://%{SERVER_NAME}/$1 [R,L]
+    </Directory>
+
+
