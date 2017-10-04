@@ -132,7 +132,7 @@ rocks-cloud-scheduler RPM
 .. _cloud-scheduler-gui: https://github.com/pragmagrid/cloud-scheduler-gui
 
 Setting up a cloud host alias
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+----------------
 
 By default, you can access the Cloud Scheduler via http://myhost.edu/cloud-scheduler.  If you want to enable https and create a friendlier name such as https://cloud.mydomain.edu, you will need to
 
