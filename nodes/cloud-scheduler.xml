@@ -18,6 +18,11 @@
 	<package>cloud-scheduler</package>
 	<package>cloud-scheduler-nodejs</package>
 	<package>cloud-scheduler-MySQL-python</package>
+	<package>cloud-scheduler-urllib3</package>
+	<package>cloud-scheduler-chardet</package>
+	<package>cloud-scheduler-certifi</package>
+	<package>cloud-scheduler-idna</package>
+	<package>cloud-scheduler-requests</package>
 	<package>rocks-cloud-scheduler</package>
 
 <post>
