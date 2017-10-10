@@ -91,6 +91,8 @@ install::
 
 	mkdir -p $(ROOT)/$(WWWROOT)/scripts
 	$(INSTALL) -m 755 $(PKGNAME)/scripts/*.py  $(ROOT)/$(WWWROOT)/scripts
+	mkdir -p $(ROOT)/$(WWWROOT)/scripts/config
+	$(INSTALL) -m 755 $(PKGNAME)/scripts/config/*.json $(ROOT)/$(WWWROOT)/scripts/config
 
 clean::
 	rm -rf $(PKGNAME)
