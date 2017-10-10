@@ -168,7 +168,7 @@ INSERT INTO `image_type` (`site_id`, `image_type_id`) VALUES
 CREATE TABLE `image_type_desc` (
   `image_type_id` bigint(20) UNSIGNED NOT NULL,
   `name` varchar(16) NOT NULL,
-  `description` varchar(32) NOT NULL
+  `description` varchar(1024) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
