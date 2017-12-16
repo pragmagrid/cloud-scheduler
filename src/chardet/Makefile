@@ -60,19 +60,21 @@ REDHAT.ROOT = $(CURDIR)/../../
 include Rules.mk
 
 
-PY.PATH = /opt/python/bin/$(PYTHONVER)
-
 build:
 	tar zxvf $(ARCHIVENAME)-$(VERSION).tar.gz
 	(\
 	    cd $(ARCHIVENAME)-$(VERSION);   \
-	    $(PY.PATH) setup.py build;      \
+	    module load opt-python; \
+	    python setup.py build;      \
+	    module unload opt-python; \
 	)
 
 install::
 	(\
 	    cd $(ARCHIVENAME)-$(VERSION);   \
-	    $(PY.PATH) setup.py $@ --root=$(ROOT)/; \
+	    module load opt-python; \
+	    python setup.py $@ --root=$(ROOT)/; \
+	    module unload opt-python; \
 	)
 
 clean::

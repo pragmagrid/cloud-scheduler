@@ -24,20 +24,20 @@
 	<package>cloud-scheduler-idna</package>
 	<package>cloud-scheduler-requests</package>
 	<package>rocks-cloud-scheduler</package>
+	<package>mariadb-server</package>
 
 <post>
 
-if [ ! -f /var/lock/subsys/mysqld ]; then
-    /etc/init.d/mysqld start
+systemctl enable mariadb
+
+if [ ! -f  ls /var/run/mariadb/mariadb.pid ]; then
+    systemctl start mariadb
 else
-    /etc/init.d/mysqld restart
+    systemctl restart mariadb
 fi
 
-/sbin/chkconfig mysqld on
-
-/sbin/ldconfig
 /sbin/service httpd restart
-
+module load opt-python 
 /opt/cloud-scheduler/bin/cs-config 
 
 </post>

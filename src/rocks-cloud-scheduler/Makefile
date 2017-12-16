@@ -59,14 +59,11 @@ REDHAT.ROOT = $(CURDIR)/../../
 -include $(ROCKSROOT)/etc/Rules.mk
 include Rules.mk
 
-PY.PATH = /opt/python/bin/$(PYTHONVER)
-
 SCRIPTS = cs-config cs-uninstall
 SQLFILES = cs-initdb.sql.tmpl  cs-admin.sql.tmpl
 HTTPFILES = cloud-scheduler-http.conf
-LDSOFILES = cloud-scheduler.conf
 
-FILES = $(SCRIPTS) $(SQLFILES) $(HTTPFILES) $(LDSOFILES)
+FILES = $(SCRIPTS) $(SQLFILES) $(HTTPFILES) 
 
 SEDSPEC += \
 	-e 's/DBUSER/$(DBUSER)/g' \
@@ -75,7 +72,6 @@ SEDSPEC += \
 	-e 's/DBADMIN/$(DBADMIN)/g' \
 	-e 's/DBDATA/$(DBDATA)/g' \
 	-e 's/CSNAME/$(CSNAME)/g'
-
 
 %: %.in
 	$(SED) $(SEDSPEC) $^ > $@
@@ -87,9 +83,6 @@ install::
 	mkdir -p $(ROOT)/etc/httpd/conf.d
 	install -m 644 $(HTTPFILES) $(ROOT)/etc/httpd/conf.d/cloud-scheduler.conf
 
-	mkdir -p $(ROOT)/etc/ld.so.conf.d
-	install -m 644 $(LDSOFILES) $(ROOT)/etc/ld.so.conf.d
-	
 	mkdir -p $(ROOT)/$(PKGROOT)/bin
 	install -m 755 $(SCRIPTS) $(ROOT)/$(PKGROOT)/bin
 	install -m 755 sha512.py  $(ROOT)/$(PKGROOT)/bin
